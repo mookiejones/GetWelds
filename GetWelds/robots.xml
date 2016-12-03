@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRobot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Robot>
+    <Name>R01_UBL</Name>
+    <Styles>
+      <StyleProgramViewModel>
+        <StyleProgramName>r01_style01.src</StyleProgramName>
+        <Text />
+        <RobotName />
+        <Style>1</Style>
+        <Positions>
+          <Position>
+            <Filename />
+            <Style>-1</Style>
+            <IsContinuous>true</IsContinuous>
+            <Velocity>0</Velocity>
+            <Name>P1</Name>
+            <MotionType>PTP</MotionType>
+            <LineNumber>159</LineNumber>
+          </Position>
+          <Position>
+            <Filename />
+            <Style>-1</Style>
+            <IsContinuous>true</IsContinuous>
+            <Velocity>0</Velocity>
+            <Name>P13</Name>
+            <MotionType>PTP</MotionType>
+            <LineNumber>166</LineNumber>
+          </Position>
+          <Position>
+            <Filename />
+            <Style>-1</Style>
+            <IsContinuous>true</IsContinuous>
+            <Velocity>0</Velocity>
+            <Name>P3</Name>
+            <MotionType>PTP</MotionType>
+            <LineNumber>173</LineNumber>
+          </Position>
+          <Position>
+            <Filename />
+            <Style>-1</Style>
+            <IsContinuous>true</IsContinuous>
+            <Velocity>0</Velocity>
+            <Name>P2</Name>
+            <MotionType>PTP</MotionType>
+            <LineNumber>180</LineNumber>
+          </Position>
+          <Position>
+            <Filename />
+            <Style>-1</Style>
+            <IsContinuous>true</IsContinuous>
+            <Velocity>0</Velocity>
+            <Name>P14</Name>
+            <MotionType>PTP</MotionType>
+            <LineNumber>187</LineNumber>
+          </Position>
+        </Positions>
+      </StyleProgramViewModel>
+    </Styles>
+  </Robot>
+</ArrayOfRobot>

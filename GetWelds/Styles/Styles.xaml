@@ -1,0 +1,66 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                   
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:GetWelds.Converters">
+    <ResourceDictionary.MergedDictionaries>
+<!--        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.DataGrid.xaml" /> --> 
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+   
+    <SolidColorBrush x:Key="MainBackground">#FFFFFF</SolidColorBrush>
+    
+    
+    <Style TargetType="{x:Type DataGrid}"  >
+        
+    </Style>
+    <converters:DoubleConverter x:Key="DoubleConverter"/>
+    <Style x:Key="TextColumnToolTip" TargetType="{x:Type DataGridCell}" >
+        <Setter Property="ToolTip" Value="{DynamicResource ZipToolTip}"/>
+    </Style>
+    <ToolTip x:Key="ZipToolTip">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding Zip.Path, StringFormat=Path \= \{0\}}"  />
+                <TextBlock Text="{Binding Zip.Date, StringFormat=Date \= \{0:F\}}"  />
+            </StackPanel>
+            <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Tools}" IsReadOnly="True" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Number}" Header="Number"/>
+                    <DataGridTextColumn Binding="{Binding X, Converter={StaticResource DoubleConverter}}" Header="X"/>
+                    <DataGridTextColumn Binding="{Binding Y, Converter={StaticResource DoubleConverter}}" Header="Y"/>
+                    <DataGridTextColumn Binding="{Binding Z, Converter={StaticResource DoubleConverter}}" Header="Z"/>
+                    <DataGridTextColumn Binding="{Binding A, Converter={StaticResource DoubleConverter}}" Header="A"/>
+                    <DataGridTextColumn Binding="{Binding B, Converter={StaticResource DoubleConverter}}" Header="B"/>
+                    <DataGridTextColumn Binding="{Binding C, Converter={StaticResource DoubleConverter}}" Header="C"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </ToolTip>
+    <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource {x:Type ToolTip}}">
+        <Style.Triggers>
+            <Trigger Property="Content" Value="{x:Static sys:String.Empty}">
+                <Setter Property="Visibility"
+                    Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Content"
+                 Value="{x:Null}">
+                <Setter Property="Visibility"
+                    Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="RobotStyle"  TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}" >
+        <Setter Property="CellStyle" Value="{StaticResource TextColumnToolTip}"/>
+    </Style>
+</ResourceDictionary>

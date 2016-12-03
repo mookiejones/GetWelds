@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfSearchParam xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SearchParam>
+    <Name>Gun {0} Mounting Style</Name>
+    <Description>GUNCODE[1]={GC #CAR}</Description>
+    <Expression>GUNCODE\[([1-4]+)\]=\{ +#([^\r;\}]+)\}</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Equalizer present for Gun {0}</Name>
+    <Description>Equalizer present for Gun 1</Description>
+    <Expression>EQUALIZER_PRESENT\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>AIRON {0}</Name>
+    <Description>Air Gun 1 Present</Description>
+    <Expression>AIRON\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Air Gun {0} Monitoring Active</Name>
+    <Description>Air Gun 1 Monitoring Active</Description>
+    <Expression>(G1AIR_MON_ON) *=*([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Transformer {0} Temp. Switch Present</Name>
+    <Description>Transformer 1 Temp. Switch Present</Description>
+    <Expression>TRAFO\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Transformer {0} Temp. Switch Monitoring Active</Name>
+    <Description>Transformer 1 Temp. Switch Monitoring Active</Description>
+    <Expression>(TRAFO1MON_ON) *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Water Saver {0} Present</Name>
+    <Description>Water Saver 1 Present</Description>
+    <Expression>WATERSAVER\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Water Saver Version</Name>
+    <Description>Water Saver Version</Description>
+    <Expression>int_WATERSAVER_VERSION\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Water Saver {0} Monitoring Active</Name>
+    <Description>Water Saver 1 Monitoring Active</Description>
+    <Expression>(WATER1MON_ON)=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Water Saver {0} Bypass Option</Name>
+    <Description>Water Saver 1 Bypass Option</Description>
+    <Expression>(bln_BYPASS_OPTION)=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Water Saver Reset Time</Name>
+    <Description>Water Saver Reset Time</Description>
+    <Expression>(WATER_SAVER_RESET_TIME)=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Maximum Tip Wear {0}</Name>
+    <Description>Maximum Tip Wear</Description>
+    <Expression>EG_WEAR_MAX\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Initalize Tip wear checking - Positive Tolerance Range {0}</Name>
+    <Description>Initalize Tip wear checking - Positive Tolerance Range</Description>
+    <Expression>EG_INIT_TOL_P\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Initalize Tip wear checking - Negitive Tolerance Range {0}</Name>
+    <Description>Initalize Tip wear checking - Negitive Tolerance Range</Description>
+    <Expression>EG_INIT_TOL_N\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Direction of tip wear compensation {0}</Name>
+    <Description>Direction of tip wear compensation</Description>
+    <Expression>EG_DIRECTION_OF_TIPWEAR\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Part thickness checking {0}- Positive Tolerance Range</Name>
+    <Description>EG_WELD_TOL_P[1]=5.0</Description>
+    <Expression>EG_WELD_TOL_P\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Part thickness checking - Negitive Tolerance Range {0}</Name>
+    <Description>Part thickness checking - Negitive Tolerance Range</Description>
+    <Expression>EG_WELD_TOL_N\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>First Force Position for Calibration {0}</Name>
+    <Description>First Force Position for Calibration</Description>
+    <Expression>EG_FIRST_STEP_FORCE\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Step Force Position for Calibration {0}</Name>
+    <Description>Step Force Position for Calibration</Description>
+    <Expression>EG_STEP_FORCE\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Wear Checking Force New Tips {0}</Name>
+    <Description>Tip Wear Checking Force New Tips</Description>
+    <Expression>EG_FORCE_INIT_NEW\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Wear Checking Force Same Tips {0}</Name>
+    <Description>Tip Wear Checking Force Same Tips</Description>
+    <Expression>EG_FORCE_INIT\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Dresser {0} present</Name>
+    <Description>Tip Dresser 1 present</Description>
+    <Expression>bln_TIPDRESSER\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tipdress Motor Starter Type {0}</Name>
+    <Description>Tipdress Motor Starter Type</Description>
+    <Expression>Tipdress_Model\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Gun {0} Tip Dress Time</Name>
+    <Description>Gun 1 Tip Dress Time</Description>
+    <Expression>int_TIPDRESS_TIME\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Gun {0} Minimum Allowed Tip Dress Cut</Name>
+    <Description>Gun 1 Minimum Allowed Tip Dress Cut</Description>
+    <Expression>rl_TIP_CUT_MIN\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Gun {0} Maximum Allowed Tip Dress Cut</Name>
+    <Description>Gun 1 Maximum Allowed Tip Dress Cut</Description>
+    <Expression>rl_TIP_CUT_MAX\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Robot Controlled Tip Dresser {0}</Name>
+    <Description>Robot Controlled Tip Dresser</Description>
+    <Expression>bln_ROBOT_CONTROLLED_TD\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Dresser {0} Motor Monitoring</Name>
+    <Description>Tip Dresser 1 Motor Monitoring</Description>
+    <Expression>bln_MOTOR_MONITORING\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Dresser {0} Motor Start Time/Timeout</Name>
+    <Description>Tip Dresser 1 Motor Start Time/Timeout</Description>
+    <Expression>int_MOTOR_START_TIME\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Dresser {0} Motor Brake Present</Name>
+    <Description>Tip Dresser 1 Motor Brake Present</Description>
+    <Expression>bln_MOTOR_BRAKE_PRESENT\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Motor Brake Release Time. {0}</Name>
+    <Description>Motor Brake Release Time.</Description>
+    <Expression>int_MOTOR_BRAKE_REL_TIME\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Dresser {0} Dump Present</Name>
+    <Description>Tip Dresser 1 Dump Present</Description>
+    <Expression>bln_DUMP_PRESENT\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Dump {0} Monitoring</Name>
+    <Description>Dump 1 Monitoring</Description>
+    <Expression>bln_DUMP_MONITORING\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Dump {0} Positioning Time/Timeout</Name>
+    <Description>Dump 1 Positioning Time/Timeout</Description>
+    <Expression>int_DUMP_TIME\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Dresser {0} Dump Brake Present</Name>
+    <Description>Tip Dresser 1 Dump Brake Present</Description>
+    <Expression>bln_DUMP_BRAKE_PRESENT\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Dump Brake Release Time {0}</Name>
+    <Description>Dump Brake Release Time.</Description>
+    <Expression>int_DUMP_BRAKE_REL_TIME\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Dump In Position Delay Time {0}</Name>
+    <Description>Dump In Position Delay Time.</Description>
+    <Expression>int_DUMP_INPOS_DELAYTIME\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Dresser {0} Cutter Wearing Count</Name>
+    <Description>Tip Dresser 1 Cutter Wearing Count</Description>
+    <Expression>int_MID_CUTTER_COUNT\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Tip Dresser {0} Cutter Worn Count</Name>
+    <Description>Tip Dresser 1 Cutter Worn Count</Description>
+    <Expression>int_MAX_CUTTER_COUNT\[([1-4]+)\] * *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Enable TCP Correction All Guns</Name>
+    <Description>Enable TCP Correction All Guns</Description>
+    <Expression>(EG_TIP_CORRECTION) *=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Enable Part Thickness Checking</Name>
+    <Description>Enable Part Thickness Checking</Description>
+    <Expression>(EG_PART_CONTROL) *= *([^\r;]+)[\r;]</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Force Established Timeout {0}</Name>
+    <Description>Force Established Timeout</Description>
+    <Expression>EG_TIMEOUT\[([1-4]+)\] *= *([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Weld Start Force Tolerence</Name>
+    <Description>Weld Start Force Tolerence</Description>
+    <Expression>(EG_FORCE_TOLERANCE) *=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Measure Tool Thickness</Name>
+    <Description>Measure Tool Thickness</Description>
+    <Expression>(EG_TOOL_THICKNESS) *=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Weld Sched In Progress Timeout</Name>
+    <Description>Weld Sched In Progress Timeout</Description>
+    <Expression>(SCHEDULE_INPROGR_TIMEOUT) *=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Weld Process Complete Timeout</Name>
+    <Description>Weld Process Complete Timeout</Description>
+    <Expression>(PROCESS_COMPLETE_TIMEOUT) *=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Weld Stepper Reset Timeout</Name>
+    <Description>Weld Stepper Reset Timeout</Description>
+    <Expression>(STEPPER_RESET_TIMEOUT) *=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Automatic Weld Retry</Name>
+    <Description>Automatic Weld Retry</Description>
+    <Expression>(bln_WELD_RETRY) *=([^\r;]+)</Expression>
+  </SearchParam>
+  <SearchParam>
+    <Name>Weld Retry Attempts</Name>
+    <Description>Weld Retry Attempts</Description>
+    <Expression>(int_WELD_RETRY_MAX) *=([^\r;]+)</Expression>
+  </SearchParam>
+</ArrayOfSearchParam>

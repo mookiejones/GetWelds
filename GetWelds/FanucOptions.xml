@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FanucOptionsClass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StyleName>PG[0-9]+.ls</StyleName>
+  <StudString>[0-9:]*L P\[[0-9:;A-Z-a-z[;-]+]* [0-9]+mm/sec [^ ]* RTCP\s;</StudString>
+  <LinearString />
+  <JointString />
+  <RivetString>[0-9:]*L P\[[0-9:;A-Z-a-z[;-]+]* [0-9]+mm/sec [^ ]* RTCP\s;</RivetString>
+  <NutWeldString />
+  <ServoWeldString>([0-9]+):[J|L]{1} +P\[([0-9:1-z]+)/] +([0-9]+)mm/sec +[0-9a-zA-Z]*[^:]*: *SPOT\[SD=([0-9]{1,2}),P=([0-9]{1,2}),S=([0-9]{1,2}),ED=([0-9]{1,2})/] *;</ServoWeldString>
+</FanucOptionsClass>

@@ -1,0 +1,67 @@
+﻿<controls:MetroWindow    
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:view="clr-namespace:GetWelds.Views"
+    xmlns:anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:resources="clr-namespace:GetWelds.Resources"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+
+    mc:Ignorable="anno"  x:Class="GetWelds.MainWindow"
+    WindowState="Maximized"
+    AllowDrop="True"
+        Title="{Binding Version,StringFormat='Weld Comparer {0}'}" Icon="top_kuka.ico" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Strings.xaml" />
+                <ResourceDictionary Source="MakeSkins/MakeSkins.xaml" />
+                <ResourceDictionary Source="Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout  Header="{x:Static resources:LabelResources.Options}" IsOpen="{Binding Main.ShowOptions,NotifyOnSourceUpdated=True,Source={StaticResource Locator}}" Position="Right" ContentTemplate="{StaticResource OptionsTemplate}"/>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    <controls:MetroWindow.InputBindings>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenOptionsCommand}"/>           
+    </controls:MetroWindow.InputBindings>
+   
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <ToggleButton x:Name="OptionsButton" Background="Transparent" BorderBrush="Transparent" IsChecked="{Binding ShowOptions, Mode=TwoWay}" Content="{x:Static resources:LabelResources.Options}"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Drop">
+            <command:EventToCommand Command="{Binding Directories.DropCommand, Mode=OneWay, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu IsMainMenu="True" DataContext="{Binding Source={StaticResource Locator}}">
+            <MenuItem Header="{x:Static resources:MenuResources.File}">
+                <MenuItem Header="{x:Static resources:MenuResources.SaveToXml}" Command="{Binding Options.SaveToXmlCommand, Mode=OneWay}" CommandParameter="{Binding Directories.Robots, Source={StaticResource Locator}}" />
+            </MenuItem>
+            <MenuItem Header="{x:Static resources:MenuResources.Help}">
+                <MenuItem Header="{x:Static resources:MenuResources.ShowAbout}" Click="ShowAbout" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock DataContext="{Binding Source={StaticResource Locator}}" Text="{Binding Directories.StatusText,NotifyOnSourceUpdated=True}"  />
+            <controls:MetroProgressBar Grid.Row="1" IsIndeterminate="{Binding Directories.IsSearching}" DataContext="{Binding Source={StaticResource Locator}}" Grid.Column="1"/>
+        </Grid>
+        <view:ParseDirectoriesView Grid.Row="2"/>
+    </Grid>
+</controls:MetroWindow>

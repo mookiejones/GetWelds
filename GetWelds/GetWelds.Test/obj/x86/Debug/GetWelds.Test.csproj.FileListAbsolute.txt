@@ -1,0 +1,5 @@
+E:\ProgramSVN\trunk\ProgramProjects\GetWelds.Test\bin\x86\Debug\GetWelds.Test.dll
+E:\ProgramSVN\trunk\ProgramProjects\GetWelds.Test\bin\x86\Debug\GetWelds.Test.pdb
+E:\ProgramSVN\trunk\ProgramProjects\GetWelds.Test\obj\x86\Debug\GetWelds.Test.dll
+E:\ProgramSVN\trunk\ProgramProjects\GetWelds.Test\obj\x86\Debug\GetWelds.Test.pdb
+E:\ProgramSVN\trunk\ProgramProjects\GetWelds.Test\obj\x86\Debug\GetWelds.Test.csprojResolveAssemblyReference.cache

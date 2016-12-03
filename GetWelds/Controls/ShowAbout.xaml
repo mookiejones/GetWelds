@@ -1,0 +1,55 @@
+﻿<Window x:Class="GetWelds.Controls.ShowAbout"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ShowAbout" Height="300" Width="300" SizeToContent="WidthAndHeight" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">  
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="IsEnabled" Value="False"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Product Name" Grid.Row="0" Margin="5" />
+                    <TextBlock Text="Version" Grid.Row="1" Margin="5" />
+                    <TextBlock Text="Copyright" Grid.Row="2" Margin="5" />
+                    <TextBlock Text="Company Name" Grid.Row="3" Margin="5" />
+                    <TextBox x:Name="ProductName" Grid.Row="0" Grid.Column="1" />
+                    <TextBox x:Name="Version" Grid.Row="1" Grid.Column="1" />
+                    <TextBox x:Name="Copyright" Grid.Row="2" Grid.Column="1" />
+                    <TextBox x:Name="CompanyName" Grid.Row="3" Grid.Column="1" />
+                    <TextBox x:Name="Changes" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  >
+                        
+                    </TextBox>
+                </Grid>
+                <Button Content="_Ok" Grid.Row="1" Click="Button_Click" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

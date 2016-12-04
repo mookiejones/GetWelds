@@ -1,5 +1,4 @@
-﻿using System.IO;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using System.Xml.Serialization;
 
 namespace GetWelds
@@ -8,8 +7,8 @@ namespace GetWelds
     /// Robot Position
     /// </summary>
     /// <remarks>Robot Position</remarks>   
-    [XmlInclude(typeof(GetWelds.Robots.Kuka.RobotWeld))]
-    [XmlInclude(typeof(GetWelds.Robots.Fanuc.RobotWeld))]
+    [XmlInclude(typeof(Robots.Kuka.RobotWeld))]
+    [XmlInclude(typeof(Robots.Fanuc.RobotWeld))]
     public class Position : ViewModelBase
     {
         public Position()
@@ -28,7 +27,7 @@ namespace GetWelds
         /// <summary>
         /// The <see cref="ShortFileName" /> property's name.
         /// </summary>
-        public const string ShortFileNamePropertyName = "ShortFileName";
+        public const string SHORT_FILE_NAME_PROPERTY_NAME = "ShortFileName";
 
         private string _shorFileName = string.Empty;
 
@@ -50,9 +49,9 @@ namespace GetWelds
                     return;
                 }
 
-                RaisePropertyChanging(ShortFileNamePropertyName);
+                RaisePropertyChanging(SHORT_FILE_NAME_PROPERTY_NAME);
                 _shorFileName = value;
-                RaisePropertyChanged(ShortFileNamePropertyName);
+                RaisePropertyChanged(SHORT_FILE_NAME_PROPERTY_NAME);
             }
         }
         #endregion
@@ -60,7 +59,7 @@ namespace GetWelds
         /// <summary>
         /// The <see cref="Filename" /> property's name.
         /// </summary>
-        public const string FilenamePropertyName = "Filename";
+        public const string FILENAME_PROPERTY_NAME = "Filename";
 
         private string _fileName = string.Empty;
 
@@ -79,9 +78,9 @@ namespace GetWelds
             {
                 if (_fileName != value)
                 {
-                    RaisePropertyChanging(FilenamePropertyName);
+                    RaisePropertyChanging(FILENAME_PROPERTY_NAME);
                     _fileName = value;
-                    RaisePropertyChanged(FilenamePropertyName);
+                    RaisePropertyChanged(FILENAME_PROPERTY_NAME);
                 }
             }
         }
@@ -89,7 +88,7 @@ namespace GetWelds
         /// <summary>
         /// The <see cref="Style" /> property's name.
         /// </summary>
-        public const string StylePropertyName = "Style";
+        public const string STYLE_PROPERTY_NAME = "Style";
 
         private int _style = -1;
 
@@ -111,9 +110,9 @@ namespace GetWelds
                     return;
                 }
 
-                RaisePropertyChanging(StylePropertyName);
+                RaisePropertyChanging(STYLE_PROPERTY_NAME);
                 _style = value;
-                RaisePropertyChanged(StylePropertyName);
+                RaisePropertyChanged(STYLE_PROPERTY_NAME);
             }
         }
 

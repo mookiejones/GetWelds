@@ -44,9 +44,7 @@
                     <TextBox x:Name="Version" Grid.Row="1" Grid.Column="1" />
                     <TextBox x:Name="Copyright" Grid.Row="2" Grid.Column="1" />
                     <TextBox x:Name="CompanyName" Grid.Row="3" Grid.Column="1" />
-                    <TextBox x:Name="Changes" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  >
-                        
-                    </TextBox>
+                    <TextBox x:Name="Changes" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" />
                 </Grid>
                 <Button Content="_Ok" Grid.Row="1" Click="Button_Click" />
             </Grid>

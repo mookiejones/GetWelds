@@ -22,7 +22,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="StyleProgramName" /> property's name.
         /// </summary>
-        public const string StyleProgramNamePropertyName = "StyleProgramName";
+        public const string STYLE_PROGRAM_NAME_PROPERTY_NAME = "StyleProgramName";
 
         private string _styleProgramName = string.Empty;
 
@@ -45,10 +45,10 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(StyleProgramNamePropertyName);
+                RaisePropertyChanging(STYLE_PROGRAM_NAME_PROPERTY_NAME);
                 var oldValue = _styleProgramName;
                 _styleProgramName = value;
-                RaisePropertyChanged(StyleProgramNamePropertyName, oldValue, value, true);
+                RaisePropertyChanged(STYLE_PROGRAM_NAME_PROPERTY_NAME, oldValue, value, true);
             }
         }
 
@@ -59,7 +59,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Text" /> property's name.
         /// </summary>
-        public const string TextPropertyName = "Text";
+        public const string TEXT_PROPERTY_NAME = "Text";
 
         private string _text = string.Empty;
 
@@ -76,7 +76,7 @@ namespace GetWelds.ViewModels
             }
             set
             {
-                Set(TextPropertyName, ref _text, value, true);
+                Set(TEXT_PROPERTY_NAME, ref _text, value, true);
             }
         }
 
@@ -87,10 +87,10 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="ZipFile" /> property's name.
         /// </summary>
-        public const string ZipFilePropertyName = "ZipFile";
+        public const string ZIP_FILE_PROPERTY_NAME = "ZipFile";
 
         [XmlIgnore]
-        private ZipFile _zipFile = null;
+        private ZipFile _zipFile;
 
         /// <summary>
         /// Sets and gets the ZipFile property.
@@ -106,7 +106,7 @@ namespace GetWelds.ViewModels
             }
             set
             {
-                Set(ZipFilePropertyName, ref _zipFile, value, true);
+                Set(ZIP_FILE_PROPERTY_NAME, ref _zipFile, value, true);
             }
         }
 
@@ -115,7 +115,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="RobotName" /> property's name.
         /// </summary>
-        public const string RobotNamePropertyName = "RobotName";
+        public const string ROBOT_NAME_PROPERTY_NAME = "RobotName";
 
         private string _robotName = string.Empty;
 
@@ -132,7 +132,7 @@ namespace GetWelds.ViewModels
             }
             set
             {
-                Set(RobotNamePropertyName, ref _robotName, value, true);
+                Set(ROBOT_NAME_PROPERTY_NAME, ref _robotName, value, true);
             }
         }
 
@@ -143,7 +143,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Style" /> property's name.
         /// </summary>
-        public const string StylePropertyName = "Style";
+        public const string STYLE_PROPERTY_NAME = "Style";
 
         private int _style = -1;
 
@@ -160,7 +160,7 @@ namespace GetWelds.ViewModels
             }
             set
             {
-                Set(StylePropertyName, ref _style, value, true);
+                Set(STYLE_PROPERTY_NAME, ref _style, value, true);
             }
         }
 
@@ -185,20 +185,15 @@ namespace GetWelds.ViewModels
             }
         }
 
-        bool filtering = false;
+        private bool _filtering;
         private void ExecuteFilterWeldsCommand()
         {
             PositionsCollection = CollectionViewSource.GetDefaultView(Positions);
 
-            ListCollectionView list = (ListCollectionView) PositionsCollection;
+            var list = (ListCollectionView) PositionsCollection;
 
-            filtering = ! filtering;
-            if (filtering)
-            {
-                list.Filter = new Predicate<object>(x => ((AbstractWeld) x).Sequence != -1);
-            }
-            else
-                list.Filter = new Predicate<object>(x => x == x);
+            _filtering = ! _filtering;
+            list.Filter = _filtering ? (x => ((AbstractWeld) x).Sequence != -1) : new Predicate<object>(x => x == x);
 
 
         }
@@ -212,7 +207,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Programs" /> property's name.
         /// </summary>
-        public const string ProgramsPropertyName = "Programs";
+        public const string PROGRAMS_PROPERTY_NAME = "Programs";
 
         private List<string> _programs = new List<string>();
 
@@ -234,9 +229,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(ProgramsPropertyName);
+                RaisePropertyChanging(PROGRAMS_PROPERTY_NAME);
                 _programs = value;
-                RaisePropertyChanged(ProgramsPropertyName);
+                RaisePropertyChanged(PROGRAMS_PROPERTY_NAME);
             }
         }
         #endregion
@@ -249,7 +244,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Positions" /> property's name.
         /// </summary>
-        public const string PositionsPropertyName = "Positions";
+        public const string POSITIONS_PROPERTY_NAME = "Positions";
 
         private List<Position> _positions = new List<Position>();
 
@@ -301,8 +296,8 @@ namespace GetWelds.ViewModels
             var regex = new Regex(Settings.Default.FANUCSTYLEFROMPROGRAMREGEX);
             var match = regex.Match(text);
             var result = match.Groups[1].ToString();
-            if (String.IsNullOrEmpty(result)) return -1;
-            if (IsNumeric(result)&&(!String.IsNullOrEmpty(result)))
+            if (string.IsNullOrEmpty(result)) return -1;
+            if (IsNumeric(result)&&(!string.IsNullOrEmpty(result)))
                 return Convert.ToInt32(result);
 
             return -1;
@@ -321,8 +316,8 @@ namespace GetWelds.ViewModels
             try
             {
 
-                var servowelds = GetPositionMatches(_robot.LINWeldRegex, program);
-                var studWelds = GetPositionMatches(_robot.LINStudWeldRegex, program);
+                var servowelds = GetPositionMatches(_robot.LinWeldRegex, program);
+                var studWelds = GetPositionMatches(_robot.LinStudWeldRegex, program);
                 var rivets = GetPositionMatches(_robot.RivetWeldRegex, program);
                 return servowelds||studWelds||rivets;
 
@@ -341,7 +336,8 @@ namespace GetWelds.ViewModels
         /// Reusable method to get positional data from files;
         /// </summary>
         /// <param name="regex"></param>
-        /// <param name="text"></param>
+         
+        /// <param name="program"></param>
         private bool GetPositionMatches(Regex regex,FileInfo program)
         {
             if (!program.Exists)
@@ -360,8 +356,7 @@ namespace GetWelds.ViewModels
 
             if (!match.Success)
                 return false;
-            else
-               Programs.Add(name);
+            Programs.Add(name);
 
 
             var i = 0;
@@ -393,7 +388,7 @@ namespace GetWelds.ViewModels
             PositionsCollection.Filter = OnFilterWelds;
         }
 
-        bool OnFilterWelds(object item)
+        private bool OnFilterWelds(object item)
         {
             return true;
         }
@@ -414,7 +409,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="DirectoryName" /> property's name.
         /// </summary>
-        public const string DirectoryNamePropertyName = "DirectoryName";
+        public const string DIRECTORY_NAME_PROPERTY_NAME = "DirectoryName";
 
         private string _directoryName = string.Empty;
 
@@ -436,9 +431,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(DirectoryNamePropertyName);
+                RaisePropertyChanging(DIRECTORY_NAME_PROPERTY_NAME);
                 _directoryName = value;
-                RaisePropertyChanged(DirectoryNamePropertyName);
+                RaisePropertyChanged(DIRECTORY_NAME_PROPERTY_NAME);
             }
         }
         #endregion
@@ -448,7 +443,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="FullName" /> property's name.
         /// </summary>
-        public const string FullNamePropertyName = "FullName";
+        public const string FULL_NAME_PROPERTY_NAME = "FullName";
 
         private string _fullName = string.Empty;
 
@@ -470,9 +465,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(FullNamePropertyName);
+                RaisePropertyChanging(FULL_NAME_PROPERTY_NAME);
                 _fullName = value;
-                RaisePropertyChanged(FullNamePropertyName);
+                RaisePropertyChanged(FULL_NAME_PROPERTY_NAME);
             }
         }
         #endregion
@@ -482,7 +477,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Name" /> property's name.
         /// </summary>
-        public const string NamePropertyName = "Name";
+        public const string NAME_PROPERTY_NAME = "Name";
 
         private string _name = string.Empty;
 
@@ -504,9 +499,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(NamePropertyName);
+                RaisePropertyChanging(NAME_PROPERTY_NAME);
                 _name = value;
-                RaisePropertyChanged(NamePropertyName);
+                RaisePropertyChanged(NAME_PROPERTY_NAME);
             }
         }
         #endregion

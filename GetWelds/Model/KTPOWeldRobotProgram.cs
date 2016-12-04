@@ -5,7 +5,7 @@ using System.IO;
 
 namespace GetWelds.ViewModels
 {
-    public class KTPOWeldRobotProgram
+    public class KtpoWeldRobotProgram
     {
         public void ParseRobotFile(List<string> filename, int style)
         {
@@ -33,38 +33,29 @@ namespace GetWelds.ViewModels
         {
             var p = new Position();
 
-            line = line.Replace(";FOLD", String.Empty);
+            line = line.Replace(";FOLD", string.Empty);
             line = line.Substring(0, line.IndexOf(";", StringComparison.Ordinal)).Trim();
             var spl = line.Trim().Split(' ');
             p.MotionType = (PositionType)Enum.Parse(typeof(PositionType), spl[0]);
             p.Name = spl[1];
             p.Velocity = Convert.ToDouble(spl[4]);
-            p.IsContinuous = String.Equals(spl[2], "CONT", StringComparison.OrdinalIgnoreCase);
+            p.IsContinuous = string.Equals(spl[2], "CONT", StringComparison.OrdinalIgnoreCase);
             p.LineNumber = linenumber;
             return p;
         }
 
         public int Style { get; set; }
 
-        public ObservableCollection<Position> Positions
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-            }
-        }
+        public ObservableCollection<Position> Positions { get; set; }= new ObservableCollection<Position>();
 
         public void GetPositions()
         {
             throw new NotImplementedException();
         }
 
-        public KTPOWeldRobotProgram()
+        public KtpoWeldRobotProgram()
         {
-            Positions = new ObservableCollection<Position>();
+           
         }
     }
 }

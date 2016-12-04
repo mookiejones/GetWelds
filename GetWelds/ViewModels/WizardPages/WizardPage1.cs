@@ -13,7 +13,7 @@ namespace GetWelds.ViewModels.WizardPages
         /// <summary>
         /// The <see cref="RobotTypeCollection" /> property's name.
         /// </summary>
-        public const string RobotTypesPropertyName = "RobotTypes";
+        public const string ROBOT_TYPES_PROPERTY_NAME = "RobotTypes";
 
         private ICollection<string> _robotTypeCollection = new List<string>{"KUKA,Fanuc"};        
 
@@ -35,9 +35,9 @@ namespace GetWelds.ViewModels.WizardPages
                     return;
                 }
 
-                RaisePropertyChanging(RobotTypesPropertyName);
+                RaisePropertyChanging(ROBOT_TYPES_PROPERTY_NAME);
                 _robotTypeCollection = value;
-                RaisePropertyChanged(RobotTypesPropertyName);
+                RaisePropertyChanged(ROBOT_TYPES_PROPERTY_NAME);
             }
         }
         #endregion

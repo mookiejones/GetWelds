@@ -10,7 +10,7 @@ namespace GetWelds
     {
         #region Line
 
-        private const string LineString = "Line";
+        private const string LINE_STRING = "Line";
 
 
 
@@ -23,12 +23,12 @@ namespace GetWelds
 
             #endregion · Properties ·
     }
-    [XmlInclude(typeof(Position))]
+    [System.Xml.Serialization.XmlInclude(typeof(Position))]
     public class StudWeld : AbstractWeld
     {   
         #region Line
 
-        private const string LineString = "Line";
+        private const string LINE_STRING = "Line";
 
      
 
@@ -61,7 +61,7 @@ namespace GetWelds
             Velocity = Convert.ToDouble(GetWeldViewModel.GetRegexMatch(Settings.Default.StudVelocityRegex, line));
             LineNumber = linenumber;
             Schedule = GetWeldViewModel.GetRegexMatch(Settings.Default.StudScheduleRegex, line);
-            ID = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldIdRegex, line);
+            Id = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldIdRegex, line);
             Thickness = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldThicknessRegex, line);
             Force = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldForceRegex, line);
 

@@ -7,11 +7,11 @@ namespace GetWelds.Views
     /// </summary>
     public partial class WeldControl
     {
-        private GetWeldViewModel model;
+        private GetWeldViewModel _model;
         public WeldControl()
         {
             InitializeComponent();
-            model = DataContext as GetWeldViewModel;
+            _model = DataContext as GetWeldViewModel;
         }
    
 
@@ -24,6 +24,6 @@ namespace GetWelds.Views
         File,
         Directory,
         Directories,
-        Zip,
+        Zip
     }
 }

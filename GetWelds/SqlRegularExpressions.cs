@@ -20,6 +20,7 @@ namespace GetWelds
         /// </summary>
         /// <param name="text">string to check</param>
         /// <param name="pattern">regular expression</param>
+        /// <param name="options"></param>
         /// <returns>true - text consists match one at least, false - no matches</returns>
         [SqlFunction]
         public static bool Like(string text, string pattern, int options)
@@ -32,6 +33,7 @@ namespace GetWelds
         /// </summary>
         /// <param name="text">text to parse</param>
         /// <param name="pattern">regular expression pattern</param>
+        /// <param name="options"></param>
         /// <returns>MatchCollection</returns>
         [SqlFunction(FillRowMethodName = "FillMatch")]
         public static IEnumerable GetMatches(string text, string pattern, int options)

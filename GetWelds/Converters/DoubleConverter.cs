@@ -10,7 +10,7 @@ namespace GetWelds.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-return            String.Format("{0:0.##}",value);  
+return $"{value:0.##}";  
        
         }
 

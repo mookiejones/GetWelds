@@ -1,8 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using Ookii.Dialogs.Wpf;
 using GetWelds.Robots;
@@ -18,10 +15,10 @@ namespace GetWelds.Messages
         public FileMessage Message { get; set; }
 
 
-        public GetFileMessage(FileMessage msg, Action<FileMessage> callback):base(String.Empty,callback)
+        public GetFileMessage(FileMessage msg, Action<FileMessage> callback):base(string.Empty,callback)
         {
             Message = msg;
-            this.Callback = callback;
+            Callback = callback;
         }
 
      
@@ -67,7 +64,7 @@ namespace GetWelds.Messages
 
             switch (MessageType)
             {
-                case Messages.MessageType.Open:
+                case MessageType.Open:
                     OpenFileDialog = new VistaOpenFileDialog
                     {
                         Filter = filter,
@@ -76,7 +73,7 @@ namespace GetWelds.Messages
                     };
 
                     break;
-                case Messages.MessageType.Save:
+                case MessageType.Save:
           
             SaveFileDialog = new VistaSaveFileDialog
             {
@@ -85,6 +82,8 @@ namespace GetWelds.Messages
                
             };
             break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

@@ -1,19 +1,13 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections.ObjectModel;
 using GetWelds.Resources;
 using GalaSoft.MvvmLight.Command;
-using GetWelds.Model;
 using System.Xml.Serialization;
 using System.IO;
 using GalaSoft.MvvmLight.Messaging;
 using GetWelds.Robots;
 using GetWelds.Helpers;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.ComponentModel;
 using GetWelds.Robots.OptionsClasses;
 using GetWelds.Messages;
@@ -23,7 +17,7 @@ namespace GetWelds.ViewModels
     {
         
         #region · Fields ·
-        public const string optionsfile = "c:\\getweldoptions.xml";
+        public const string OPTIONSFILE = "c:\\getweldoptions.xml";
         #endregion
         
         #region · Properties ·
@@ -33,7 +27,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="RobotOptions" /> property's name.
         /// </summary>
-        public const string RobotOptionsPropertyName = "RobotOptions";
+        public const string ROBOT_OPTIONS_PROPERTY_NAME = "RobotOptions";
 
         private Options _robotOptions = new Options();
 
@@ -55,9 +49,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(RobotOptionsPropertyName);
+                RaisePropertyChanging(ROBOT_OPTIONS_PROPERTY_NAME);
                 _robotOptions = value;
-                RaisePropertyChanged(RobotOptionsPropertyName);
+                RaisePropertyChanged(ROBOT_OPTIONS_PROPERTY_NAME);
             }
         }
         #endregion
@@ -69,7 +63,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="SearchParamFileName" /> property's name.
         /// </summary>
-        public const string SearchParamFileNamePropertyName = "SearchParamFileName";
+        public const string SEARCH_PARAM_FILE_NAME_PROPERTY_NAME = "SearchParamFileName";
 
         /// <summary>
         /// Default Parameter File
@@ -94,9 +88,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(SearchParamFileNamePropertyName);
+                RaisePropertyChanging(SEARCH_PARAM_FILE_NAME_PROPERTY_NAME);
                 _searchParamFilename = value;
-                RaisePropertyChanged(SearchParamFileNamePropertyName);
+                RaisePropertyChanged(SEARCH_PARAM_FILE_NAME_PROPERTY_NAME);
             }
         }
         #endregion
@@ -108,7 +102,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="SearchExpressions" /> property's name.
         /// </summary>
-        public const string SearchParamsPropertyName = "SearchExpressions";
+        public const string SEARCH_PARAMS_PROPERTY_NAME = "SearchExpressions";
 
         private ObservableCollection<SearchParam> _searchExpressions = new ObservableCollection<SearchParam>();
 
@@ -130,9 +124,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(SearchParamsPropertyName);
+                RaisePropertyChanging(SEARCH_PARAMS_PROPERTY_NAME);
                 _searchExpressions = value;
-                RaisePropertyChanged(SearchParamsPropertyName);
+                RaisePropertyChanged(SEARCH_PARAMS_PROPERTY_NAME);
             }
         }
         #endregion
@@ -159,21 +153,20 @@ namespace GetWelds.ViewModels
         private void ExecuteSaveSearchParams()
         {
 
-            var fm = new FileMessage(Resources.LabelResources.SaveSearchParameterDialog, Resources.LabelResources.SearchParamFilter, Messages.MessageType.Save, false);
+            var fm = new FileMessage(LabelResources.SaveSearchParameterDialog, LabelResources.SearchParamFilter, Messages.MessageType.Save, false);
             var gfm = new GetFileMessage(fm, SaveSearchParameters);
 
-            Messenger.Default.Send<GetFileMessage>(gfm);
+            Messenger.Default.Send(gfm);
 
         }
-        void SaveSearchParameters(FileMessage msg)
-        {
-            if (msg.IsValid)
-            {
-                SerializeSearchParams(msg.FileName);
 
-                var text = File.ReadAllText(msg.FileName);
-                File.WriteAllText(SearchParamFileName,text);
-            }
+        private void SaveSearchParameters(FileMessage msg)
+        {
+            if (!msg.IsValid) return;
+            SerializeSearchParams(msg.FileName);
+
+            var text = File.ReadAllText(msg.FileName);
+            File.WriteAllText(SearchParamFileName,text);
         }
         #endregion
 
@@ -195,7 +188,7 @@ namespace GetWelds.ViewModels
 
         private void GotSearchParams(FileMessage msg)
         {
-            if (msg.IsValid == true)
+            if (msg.IsValid)
             {
                 DeserializeSearchParams(msg.FileName);
                 Properties.Settings.Default.ParametersFile = msg.FileName;
@@ -207,17 +200,16 @@ namespace GetWelds.ViewModels
         private void ExecuteLoadSearchParams()
         {
 
-            FileMessage msg = new FileMessage(LabelResources.LoadSearchParameters,LabelResources.SearchParamFilter,Messages.MessageType.Open,false);
+            var msg = new FileMessage(LabelResources.LoadSearchParameters,LabelResources.SearchParamFilter,Messages.MessageType.Open,false);
 
             var gfm = new GetFileMessage(msg, GotSearchParams);
 
-            Messenger.Default.Send<GetFileMessage>(gfm);
+            Messenger.Default.Send(gfm);
         }
         #endregion
         #endregion
- 
 
-        void SerializeSearchParams(string filename)
+        private void SerializeSearchParams(string filename)
         {
 
             SearchParamFileName = filename;
@@ -228,7 +220,7 @@ namespace GetWelds.ViewModels
             }
         }
 
-        void DeserializeSearchParams(string filename)
+        private void DeserializeSearchParams(string filename)
         {
             try
             {
@@ -246,9 +238,8 @@ namespace GetWelds.ViewModels
             catch(Exception ex)
             {
 
-                var d = new DialogMessage(ex.ToString(),null);
-                d.Caption="Could not load xml";
-                Messenger.Default.Send<DialogMessage>(d);
+                var d = new DialogMessage(ex.ToString(), null) {Caption = "Could not load xml"};
+                Messenger.Default.Send(d);
             }
 
         }
@@ -258,7 +249,7 @@ namespace GetWelds.ViewModels
 
             Instance = this;
 
-            var fi = new FileInfo(GetWelds.Properties.Settings.Default.ParametersFile);
+            var fi = new FileInfo(Properties.Settings.Default.ParametersFile);
             if (fi.Exists)
             {
                 SearchParamFileName = fi.FullName;
@@ -284,7 +275,7 @@ namespace GetWelds.ViewModels
 
         public static OptionsViewModel Deserialize()
         {
-            var file = optionsfile;
+            var file = OPTIONSFILE;
             if (!File.Exists(file))
                 return null;
             var serial = new XmlSerializer(typeof(OptionsViewModel));
@@ -320,15 +311,15 @@ namespace GetWelds.ViewModels
         private void ExecuteSaveToXmlCommand(ObservableCollection<AbstractRobot> robots)
         {
 
-            var fm = new FileMessage(Resources.LabelResources.ExportFilesMessage, Resources.LabelResources.SearchParamFilter, Messages.MessageType.Save, false);
-              fm.Robots = robots;
-              var gfm = new GetFileMessage(fm, SaveToXml);
+            var fm = new FileMessage(LabelResources.ExportFilesMessage, LabelResources.SearchParamFilter,
+                Messages.MessageType.Save, false) {Robots = robots};
+            var gfm = new GetFileMessage(fm, SaveToXml);
 
-            Messenger.Default.Send<GetFileMessage>(gfm);
+            Messenger.Default.Send(gfm);
 
         }
 
-        void SaveToXml(FileMessage msg)
+        private void SaveToXml(FileMessage msg)
         {
             Serializer.Serialize(msg.Robots, msg.FileName);
         }
@@ -341,7 +332,7 @@ namespace GetWelds.ViewModels
         {
             // Get path of executable.
             //TODO Make sure that debug files get transferred with app.
-            var basePath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location); 
+            var basePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location); 
                
            var options = Deserialize(Path.Combine(basePath,"FanucOptions.xml"),new FanucOptionsClass());
             FanucOptions=options??new FanucOptionsClass();
@@ -391,27 +382,27 @@ namespace GetWelds.ViewModels
 
                 var options =  (IOptionsClass)serial.Deserialize(stream);
 
-                if (String.IsNullOrEmpty(options.JointString))
+                if (string.IsNullOrEmpty(options.JointString))
                     options.JointString = optionsClass.JointString;
 
-                if (String.IsNullOrEmpty(options.StudString))
+                if (string.IsNullOrEmpty(options.StudString))
                     options.StudString = optionsClass.StudString;
 
-                if (String.IsNullOrEmpty(options.LinearString))
+                if (string.IsNullOrEmpty(options.LinearString))
                     options.LinearString = optionsClass.LinearString;
 
-                if (String.IsNullOrEmpty(options.NutWeldString))
+                if (string.IsNullOrEmpty(options.NutWeldString))
                     options.NutWeldString = optionsClass.NutWeldString;
 
-                if (String.IsNullOrEmpty(options.RivetString))
+                if (string.IsNullOrEmpty(options.RivetString))
                     options.RivetString = optionsClass.RivetString;
 
 
-                if (String.IsNullOrEmpty(options.ServoWeldString))
+                if (string.IsNullOrEmpty(options.ServoWeldString))
                     options.ServoWeldString = optionsClass.ServoWeldString;
 
 
-                if (String.IsNullOrEmpty(options.StyleName))
+                if (string.IsNullOrEmpty(options.StyleName))
                     options.StyleName = optionsClass.StyleName;
 
 

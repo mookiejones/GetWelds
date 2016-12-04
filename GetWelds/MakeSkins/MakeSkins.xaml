@@ -97,7 +97,7 @@
         </DataGrid>
     </DataTemplate>
 
-    <DataTemplate x:Key="KUKAPositionsTemplate">
+    <DataTemplate x:Key="KukaPositionsTemplate">
         <DataGrid x:Name="PositionsDataGrid" ItemsSource="{Binding SelectedStyle.Positions}" IsReadOnly="True" AutoGenerateColumns="False" RowBackground="SteelBlue" AlternatingRowBackground="LightBlue" >
             <DataGrid.ContextMenu>
                 <ContextMenu>

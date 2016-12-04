@@ -25,7 +25,7 @@
         <DataGrid ItemsSource="{Binding Positions}" Grid.Row="1" AutoGenerateColumns="False" RowBackground="SteelBlue" AlternatingRowBackground="LightBlue"  >
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Export to XML" Command="{Binding ExportToXMLCommand, Mode=OneWay}" />
+                    <MenuItem Header="Export to XML" Command="{Binding ExportToXmlCommand, Mode=OneWay}" />
                     <MenuItem Header="Show Only Welds" IsCheckable="True" IsChecked="{Binding ShowOnlyWelds}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>

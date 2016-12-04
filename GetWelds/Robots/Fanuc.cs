@@ -6,12 +6,11 @@ using System.Text.RegularExpressions;
 using GetWelds.ViewModels;
 using GetWelds.Properties;
 using GetWelds.Converters;
-using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
 namespace GetWelds.Robots
 {
-    [XmlInclude(typeof(RobotWeld))]
+    [System.Xml.Serialization.XmlInclude(typeof(RobotWeld))]
     public class Fanuc : AbstractRobot
     {
 
@@ -51,7 +50,7 @@ namespace GetWelds.Robots
 
                 var styles = from file in Files
                              where regex.IsMatch(file.Name)
-                             select new StyleProgramViewModel()
+                             select new StyleProgramViewModel
                              {
                                  
                              Style=Convert.ToInt32(GetStyleNumber(file.Name)),
@@ -72,19 +71,21 @@ namespace GetWelds.Robots
 
         public override AbstractWeld GetWeld(Match match, int linenumber, int sequence, string filename, int style)
         {
-            var weld = new RobotWeld(filename, style);
-            weld.IsServoWeld = true;
-            weld.Line = match.ToString();
-            weld.Sequence = sequence;
-            weld.Velocity = Convert.ToDouble(match.Groups[3].ToString());
-            weld.LineNumber = linenumber;
-            weld.Schedule = match.Groups[6].ToString();
-            weld.Force = match.Groups[5].ToString();
-            weld.Name = GetWeldName(match.Groups[2].ToString());
-            weld.ID = GetWeldID(match.Groups[2].ToString());
-            weld.StartDistance = Convert.ToInt32(match.Groups[5].ToString());
-            weld.EndDistance = Convert.ToInt32(match.Groups[7].ToString());
-            weld.Filename = filename;
+            var weld = new RobotWeld(filename, style)
+            {
+                IsServoWeld = true,
+                Line = match.ToString(),
+                Sequence = sequence,
+                Velocity = Convert.ToDouble(match.Groups[3].ToString()),
+                LineNumber = linenumber,
+                Schedule = match.Groups[6].ToString(),
+                Force = match.Groups[5].ToString(),
+                Name = GetWeldName(match.Groups[2].ToString()),
+                Id = GetWeldId(match.Groups[2].ToString()),
+                StartDistance = Convert.ToInt32(match.Groups[5].ToString()),
+                EndDistance = Convert.ToInt32(match.Groups[7].ToString()),
+                Filename = filename
+            };
             return weld;
          
         }
@@ -110,7 +111,7 @@ namespace GetWelds.Robots
 
                 foreach (var matches in lines.Select(line => regex.Match(line)).Where(matches => matches.Groups.Count > 1))
                 {
-                    var f = matches.Groups[1].ToString().Replace(";", String.Empty).Trim();
+                    var f = matches.Groups[1].ToString().Replace(";", string.Empty).Trim();
 
 
                     var file = new FileInfo(Path.Combine(style.DirectoryName, f + Settings.Default.FANUCEXTENSION));
@@ -196,12 +197,12 @@ namespace GetWelds.Robots
         #region · Overriden Properties ·
 
 
-        public override Regex PTPWeldRegex
+        public override Regex PtpWeldRegex
         {
             get { return new Regex(OptionsViewModel.Instance.RobotOptions.FanucOptions.ServoWeldString,RegexOptions.IgnoreCase); }
         }
 
-        public override Regex LINWeldRegex
+        public override Regex LinWeldRegex
         {
             get { return new Regex(OptionsViewModel.Instance.RobotOptions.FanucOptions.ServoWeldString, RegexOptions.IgnoreCase); }
         }
@@ -213,14 +214,14 @@ namespace GetWelds.Robots
         }
 
 
-        public override Regex LINStudWeldRegex
+        public override Regex LinStudWeldRegex
         {
             get { return new Regex(OptionsViewModel.Instance.RobotOptions.FanucOptions.StudString, RegexOptions.IgnoreCase); }
         }
 
-        public override Regex PTPStudWeldRegex
+        public override Regex PtpStudWeldRegex
         {
-            get { return LINStudWeldRegex; }
+            get { return LinStudWeldRegex; }
         }
 
 
@@ -262,7 +263,7 @@ namespace GetWelds.Robots
             return result;
         }
 
-        public string GetWeldID(string pos)
+        public string GetWeldId(string pos)
         {
 
             // Find Colon
@@ -317,7 +318,7 @@ namespace GetWelds.Robots
                 Velocity = Convert.ToDouble(GetWeldViewModel.GetRegexMatch(Settings.Default.VelocityRegex, line));
                 LineNumber = linenumber;
                 Schedule = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldScheduleRegex, line);
-                ID = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldIdRegex, line);
+                Id = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldIdRegex, line);
                 Thickness = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldThicknessRegex, line);
                 Force = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldForceRegex, line);
 

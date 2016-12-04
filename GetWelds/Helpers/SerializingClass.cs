@@ -2,12 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 using System.IO;
 using GetWelds.ViewModels;
-using System.Xml;
+
 namespace GetWelds.Helpers
 {
     public static class Serializer
@@ -21,8 +19,8 @@ namespace GetWelds.Helpers
         }
     }
 
- 
-    class SerializingClass
+
+    internal class SerializingClass
     {
         #region Constructor
         #endregion
@@ -53,10 +51,10 @@ namespace GetWelds.Helpers
 
 
         public string Name { get; set; }
-        public List<GetWelds.Robots.Kuka.RobotWeld> Welds { get; set; }
+        public List<Kuka.RobotWeld> Welds { get; set; }
         public SerializedProgram()
         {
-            Welds = new List<GetWelds.Robots.Kuka.RobotWeld>();
+            Welds = new List<Kuka.RobotWeld>();
         }
     }
     public class SerializeRobot
@@ -69,7 +67,7 @@ namespace GetWelds.Helpers
         public List<Tool> Tools { get; set; }
 
         public List<Zone> Zones { get; set; }
-        public List<GetWelds.Robots.Kuka.RobotWeld> Welds { get; set; }
+        public List<Kuka.RobotWeld> Welds { get; set; }
 
 
         public List<SerializedProgram> Styles { get; set; }
@@ -78,7 +76,7 @@ namespace GetWelds.Helpers
         {
             Options = new List<SearchParam>();
             Tools = new List<Tool>();
-            Welds = new List<GetWelds.Robots.Kuka.RobotWeld>();
+            Welds = new List<Kuka.RobotWeld>();
             Zones = new List<Zone>();
         }
 

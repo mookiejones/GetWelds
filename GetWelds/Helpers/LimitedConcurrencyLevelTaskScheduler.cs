@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,7 +20,7 @@ namespace GetWelds.Converters
         private readonly int _maxDegreeOfParallelism;
 
         // Indicates whether the scheduler is currently processing work items.  
-        private int _delegatesQueuedOrRunning = 0;
+        private int _delegatesQueuedOrRunning;
 
         // Creates a new instance with the specified degree of parallelism.  
         public LimitedConcurrencyLevelTaskScheduler(int maxDegreeOfParallelism)
@@ -77,7 +75,7 @@ namespace GetWelds.Converters
                         }
 
                         // Execute the task we pulled out of the queue 
-                        base.TryExecuteTask(item);
+                        TryExecuteTask(item);
                     }
                 }
                 // We're done processing items on the current thread 
@@ -94,12 +92,8 @@ namespace GetWelds.Converters
             // If the task was previously queued, remove it from the queue 
             if (taskWasPreviouslyQueued)
                 // Try to run the task.  
-                if (TryDequeue(task))
-                    return base.TryExecuteTask(task);
-                else
-                    return false;
-            else
-                return base.TryExecuteTask(task);
+                return TryDequeue(task) && TryExecuteTask(task);
+            return TryExecuteTask(task);
         }
 
         // Attempt to remove a previously scheduled task from the scheduler.  
@@ -114,7 +108,7 @@ namespace GetWelds.Converters
         // Gets an enumerable of the tasks currently scheduled on this scheduler.  
         protected sealed override IEnumerable<Task> GetScheduledTasks()
         {
-            bool lockTaken = false;
+            var lockTaken = false;
             try
             {
                 Monitor.TryEnter(_tasks, ref lockTaken);

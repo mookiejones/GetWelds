@@ -1,9 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using GetWelds.Controls;
 using GetWelds.Messages;
-using GetWelds.ViewModels;
-using System.IO;
-using System.Xml.Serialization;
+
 namespace GetWelds
 {
     /// <summary>
@@ -14,13 +12,12 @@ namespace GetWelds
         public MainWindow()
         {
             InitializeComponent();
-            this.Closing += MainWindow_Closing;
+            Closing += MainWindow_Closing;
             Messenger.Default.Register<GetFileMessage>(this,GetMessage);
         }
 
-      
 
-        void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
           
         }
@@ -33,9 +30,11 @@ namespace GetWelds
 
         private void ShowAbout(object sender, System.Windows.RoutedEventArgs e)
         {
-            var about = new ShowAbout();
-            about.Owner = this;
-            about.ShowInTaskbar = false;
+            var about = new ShowAbout
+            {
+                Owner = this,
+                ShowInTaskbar = false
+            };
             about.ShowDialog();
          }
 

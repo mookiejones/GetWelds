@@ -1,7 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using GetWelds.Messages;
-using System;
-namespace GetWelds.ViewModels
+﻿namespace GetWelds.ViewModels
 {
    public class DataService:IDataService
     {

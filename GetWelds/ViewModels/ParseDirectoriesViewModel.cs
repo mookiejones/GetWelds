@@ -1,7 +1,5 @@
-﻿using System.Security.Cryptography;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GetWelds.ViewModels;
 using GetWelds.Robots;
 using GetWelds.Views;
 using System;
@@ -13,13 +11,8 @@ using System.Windows;
 using System.Xml;
 using System.Xml.Serialization;
 using GetWelds.Converters;
-using GetWelds.Model;
-using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
-using System.Threading.Tasks;
-using System.Threading;
 using System.ComponentModel;
-using System.Windows.Data;
 
 namespace GetWelds.ViewModels
 {
@@ -38,9 +31,9 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="StatusText" /> property's name.
         /// </summary>
-        public const string StatusTextPropertyName = "StatusText";
+        public const string STATUS_TEXT_PROPERTY_NAME = "StatusText";
 
-        private string _statusText = String.Empty;
+        private string _statusText = string.Empty;
 
         /// <summary>
         /// Sets and gets the StatusText property.
@@ -60,9 +53,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(StatusTextPropertyName);
+                RaisePropertyChanging(STATUS_TEXT_PROPERTY_NAME);
                 _statusText = value;
-                RaisePropertyChanged(StatusTextPropertyName);
+                RaisePropertyChanged(STATUS_TEXT_PROPERTY_NAME);
             }
         }
         #region RobotType
@@ -70,7 +63,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="RobotType" /> property's name.
         /// </summary>
-        public const string RobotTypePropertyName = "RobotType";
+        public const string ROBOT_TYPE_PROPERTY_NAME = "RobotType";
 
         private RobotType _robotType = RobotType.None;
 
@@ -92,9 +85,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(RobotTypePropertyName);
+                RaisePropertyChanging(ROBOT_TYPE_PROPERTY_NAME);
                 _robotType = value;
-                RaisePropertyChanged(RobotTypePropertyName);
+                RaisePropertyChanged(ROBOT_TYPE_PROPERTY_NAME);
             }
         }
 
@@ -107,9 +100,9 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="IsSearching" /> property's name.
         /// </summary>
-        public const string IsSearchingPropertyName = "IsSearching";
+        public const string IS_SEARCHING_PROPERTY_NAME = "IsSearching";
 
-        private bool _isSearching = false;
+        private bool _isSearching;
 
         /// <summary>
         /// Sets and gets the IsSearching property.
@@ -128,9 +121,9 @@ namespace GetWelds.ViewModels
                 {
                     return;
                 }
-                RaisePropertyChanging(IsSearchingPropertyName);
+                RaisePropertyChanging(IS_SEARCHING_PROPERTY_NAME);
                 _isSearching = value;
-                RaisePropertyChanged(IsSearchingPropertyName);
+                RaisePropertyChanged(IS_SEARCHING_PROPERTY_NAME);
 
             }
         }
@@ -142,7 +135,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="SelectedRobot" /> property's name.
         /// </summary>
-        public const string SelectedRobotPropertyName = "SelectedRobot";
+        public const string SELECTED_ROBOT_PROPERTY_NAME = "SelectedRobot";
 
         private AbstractRobot _selectedRobot = new RobotBase();
 
@@ -164,9 +157,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(SelectedRobotPropertyName);
+                RaisePropertyChanging(SELECTED_ROBOT_PROPERTY_NAME);
                 _selectedRobot = value;
-                RaisePropertyChanged(SelectedRobotPropertyName);
+                RaisePropertyChanged(SELECTED_ROBOT_PROPERTY_NAME);
             }
         }
 
@@ -177,39 +170,8 @@ namespace GetWelds.ViewModels
         #region · Collections ·
 
         
-
-        #region Robots
-        /// <summary>
-        /// The <see cref="Robots" /> property's name.
-        /// </summary>
-        public const string RobotsPropertyName = "Robots";
-
-        private ObservableCollection<AbstractRobot> _robots = new ObservableCollection<AbstractRobot>();
-
-        /// <summary>
-        /// Sets and gets the Robots property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// </summary>
-        public ObservableCollection<AbstractRobot> Robots
-        {
-            get
-            {
-                return _robots;
-            }
-
-            set
-            {
-                if (_robots == value)
-                {
-                    return;
-                }
-
-                RaisePropertyChanging(RobotsPropertyName);
-                _robots = value;
-                RaisePropertyChanged(RobotsPropertyName);
-            }
-        }
-        #endregion
+        public ObservableCollection<AbstractRobot> Robots { get; set; }= new ObservableCollection<AbstractRobot>();
+      
         
 
         #endregion · Collections ·
@@ -456,11 +418,11 @@ namespace GetWelds.ViewModels
 
         }
 
-        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var robot = e.Result as AbstractRobot;
             Robots.Add(robot);
-            StatusText = String.Format("Completed Parsing {0}", robot.Name);
+            StatusText = $"Completed Parsing {robot.Name}";
         }
         private void ParseDirectories(IEnumerable<DirectoryInfo> directories)
         {
@@ -481,8 +443,7 @@ namespace GetWelds.ViewModels
             
            
 
-            robot.Name = directory.Name; ;
-
+            robot.Name = directory.Name; 
             // Remove the parenthesis
             if (robot.Name.Contains("("))
                 robot.Name = robot.Name.Replace("(", string.Empty);
@@ -502,13 +463,10 @@ namespace GetWelds.ViewModels
        
         private AbstractRobot GetRobotType(RobotZipFile zip)
         {
-            if (zip.Entries.Any(z => String.Equals(Path.GetExtension(z.FileName),".src",StringComparison.OrdinalIgnoreCase)))
+            if (zip.Entries.Any(z => string.Equals(Path.GetExtension(z.FileName),".src",StringComparison.OrdinalIgnoreCase)))
                 return new Kuka();
 
-            if (zip.Entries.Any(z => Path.GetExtension(z.FileName).ToLowerInvariant() == ".ls"))
-                return new Fanuc();
-
-            return null;
+            return zip.Entries.Any(z => Path.GetExtension(z.FileName).ToLowerInvariant() == ".ls") ? new Fanuc() : null;
         }
         private AbstractRobot GetRobotType(List<RobotFile> files)
         {
@@ -566,7 +524,8 @@ namespace GetWelds.ViewModels
             return ParseZip(zip);
 
         }
-        object o = new object();
+
+        private object _o = new object();
         private AbstractRobot ParseZip(RobotZipFile zip)
         {
 

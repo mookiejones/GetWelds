@@ -1,16 +1,8 @@
 using System.Collections.Generic;
-using System.Xml;
-using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GetWelds.Robots;
-using System.Xml.Serialization;
-using GetWelds.Converters;
-using System.Linq;
-using GetWelds.Model;
-using System.IO;
 using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
+
 namespace GetWelds.ViewModels
 {
     /// <summary>
@@ -33,7 +25,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Version" /> property's name.
         /// </summary>
-        public const string VersionPropertyName = "Version";
+        public const string VERSION_PROPERTY_NAME = "Version";
 
         private string _version = string.Empty;
 
@@ -55,9 +47,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(VersionPropertyName);
+                RaisePropertyChanging(VERSION_PROPERTY_NAME);
                 _version = value;
-                RaisePropertyChanged(VersionPropertyName);
+                RaisePropertyChanged(VERSION_PROPERTY_NAME);
             }
         }
         #endregion
@@ -77,9 +69,9 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="ShowOptions" /> property's name.
         /// </summary>
-        public const string ShowOptionsPropertyName = "ShowOptions";
+        private const string SHOW_OPTIONS_PROPERTY_NAME = "ShowOptions";
 
-        private bool _showOptions = false;
+        private bool _showOptions;
 
         /// <summary>
         /// Sets and gets the ShowOptions property.
@@ -99,9 +91,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(ShowOptionsPropertyName);
+                RaisePropertyChanging(SHOW_OPTIONS_PROPERTY_NAME);
                 _showOptions = value;
-                RaisePropertyChanged(ShowOptionsPropertyName);
+                RaisePropertyChanged(SHOW_OPTIONS_PROPERTY_NAME);
             }
         }
         #endregion
@@ -163,7 +155,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="SelectedRobotType" /> property's name.
         /// </summary>
-        public const string SelectedRobotTypePropertyName = "SelectedRobotType";
+        public const string SELECTED_ROBOT_TYPE_PROPERTY_NAME = "SelectedRobotType";
 
         private string _selectedRobotType = string.Empty;
 
@@ -185,9 +177,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(SelectedRobotTypePropertyName);
+                RaisePropertyChanging(SELECTED_ROBOT_TYPE_PROPERTY_NAME);
                 _selectedRobotType = value;
-                RaisePropertyChanged(SelectedRobotTypePropertyName);
+                RaisePropertyChanged(SELECTED_ROBOT_TYPE_PROPERTY_NAME);
             }
         }
         #endregion
@@ -197,7 +189,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="RobotTypeCollection" /> property's name.
         /// </summary>
-        public const string RobotTypesPropertyName = "RobotTypes";
+        public const string ROBOT_TYPES_PROPERTY_NAME = "RobotTypes";
 
         private ICollection<string> _robotTypeCollection = new List<string> { "KUKA","Fanuc" };
 
@@ -219,9 +211,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(RobotTypesPropertyName);
+                RaisePropertyChanging(ROBOT_TYPES_PROPERTY_NAME);
                 _robotTypeCollection = value;
-                RaisePropertyChanged(RobotTypesPropertyName);
+                RaisePropertyChanged(ROBOT_TYPES_PROPERTY_NAME);
             }
         }
         #endregion
@@ -284,7 +276,7 @@ namespace GetWelds.ViewModels
     public enum MessageType
     {
         SearchStart,
-        SearchEnd,
+        SearchEnd
     }
 
 

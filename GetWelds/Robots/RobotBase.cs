@@ -76,29 +76,29 @@ namespace GetWelds.Robots
             return new BaseWeld();
         }
 
-        public override Regex PTPWeldRegex
+        public override Regex PtpWeldRegex
         {
            get{return new Regex(string.Empty); }
         }
 
-        public override Regex LINWeldRegex
+        public override Regex LinWeldRegex
         {
             get { return new Regex(string.Empty); }
         }
 
-        public override Regex LINStudWeldRegex
+        public override Regex LinStudWeldRegex
         {
             get { return new Regex(string.Empty); }
         }
 
-        public override Regex PTPStudWeldRegex
+        public override Regex PtpStudWeldRegex
         {
             get { return new Regex(string.Empty); }
         }
 
         public override string FileExtension
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
 

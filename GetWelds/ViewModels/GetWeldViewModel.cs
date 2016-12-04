@@ -91,7 +91,8 @@ namespace GetWelds.ViewModels
             {
                 for (var i = 0; i < 20; i++)
                 {
-                    var p = new Weld { Sequence = i, Schedule = GetWeldSchedule, Thickness = GetThickness, Force = GetWeldForce, ID = GetWeldForce, Name = String.Format("Position{0}", i), A = GetRandom, B = GetRandom, C = GetRandom, X = GetRandomMotion, Y = GetRandomMotion, Z = GetRandomMotion, E1 = "20" };
+                    var p = new Weld { Sequence = i, Schedule = GetWeldSchedule, Thickness = GetThickness, Force = GetWeldForce, Id = GetWeldForce, Name =
+                        $"Position{i}", A = GetRandom, B = GetRandom, C = GetRandom, X = GetRandomMotion, Y = GetRandomMotion, Z = GetRandomMotion, E1 = "20" };
 
                     Positions.Add(p);
                 }// Code runs in Blend --> create design time data.
@@ -143,7 +144,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Positions" /> property's name.
         /// </summary>
-        public const string PositionsPropertyName = "Positions";
+        public const string POSITIONS_PROPERTY_NAME = "Positions";
 
         private List<Position> _positions;
 
@@ -165,29 +166,29 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(PositionsPropertyName);
+                RaisePropertyChanging(POSITIONS_PROPERTY_NAME);
                 _positions = value;
-                RaisePropertyChanged(PositionsPropertyName);
+                RaisePropertyChanged(POSITIONS_PROPERTY_NAME);
             }
         }
 
         #endregion Positions
 
-        private ICommand _exportToXML;
+        private ICommand _exportToXml;
 
-        public ICommand ExportToXMLCommand { get { return _exportToXML ?? (_exportToXML = new RelayCommand(ExportXML, CanExportCSV)); } }
+        public ICommand ExportToXmlCommand { get { return _exportToXml ?? (_exportToXml = new RelayCommand(ExportXml, CanExportCsv)); } }
 
         #endregion Properties
 
-        private void ExportXML()
+        private void ExportXml()
         {
             var sfd = new SaveFileDialog { Filter = "XML File (*.xml)|*.xml" };
             var result = sfd.ShowDialog();
             if (result != true) return;
-            ExportToXMLFile(sfd.FileName);
+            ExportToXmlFile(sfd.FileName);
         }
 
-        public void ExportToXMLFile(string filename)
+        public void ExportToXmlFile(string filename)
         {
             var serializer = new XmlSerializer(typeof(ObservableCollection<Weld>));
             var writer = new StreamWriter(filename);
@@ -196,13 +197,10 @@ namespace GetWelds.ViewModels
             writer.Close();
         }
 
-        public ICommand ExportToXML
-        {
-            get { return _exportToXML; }
-            set { _exportToXML = value; }
-        }
+        public ICommand ExportToXml { get; set; }
 
-        protected bool CanExportCSV()
+
+        protected bool CanExportCsv()
         {
             return true;
         }
@@ -255,13 +253,13 @@ namespace GetWelds.ViewModels
         {
             var p = new Position {Filename = FileName.Name};
 
-            line = line.Replace(";FOLD", String.Empty);
+            line = line.Replace(";FOLD", string.Empty);
             line = line.Substring(0, line.IndexOf(";", StringComparison.Ordinal)).Trim();
             var spl = line.Trim().Split(' ');
             p.MotionType = (PositionType)Enum.Parse(typeof(PositionType), spl[0]);
             p.Name = spl[1];
             p.Velocity = Convert.ToDouble(spl[4]);
-            p.IsContinuous = String.Equals(spl[2], "CONT", StringComparison.OrdinalIgnoreCase);
+            p.IsContinuous = string.Equals(spl[2], "CONT", StringComparison.OrdinalIgnoreCase);
             p.LineNumber = linenumber;
             return p;
         }
@@ -276,7 +274,7 @@ namespace GetWelds.ViewModels
                 Velocity = Convert.ToDouble(GetRegexMatch(Settings.Default.VelocityRegex, line)),
                 LineNumber = linenumber,
                 Schedule = GetRegexMatch(Settings.Default.WeldScheduleRegex, line),
-                ID = GetRegexMatch(Settings.Default.WeldIdRegex, line),
+                Id = GetRegexMatch(Settings.Default.WeldIdRegex, line),
                 Thickness = GetRegexMatch(Settings.Default.WeldThicknessRegex, line),
                 Force = GetRegexMatch(Settings.Default.WeldForceRegex, line),
                 Gun1 = GetRegexMatch(Settings.Default.Gun1Regex, line),

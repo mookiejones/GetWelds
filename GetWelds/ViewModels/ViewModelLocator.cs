@@ -16,7 +16,6 @@ using System.Diagnostics.CodeAnalysis;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GetWelds.Design;
-using GetWelds.ViewModels;
 using Microsoft.Practices.ServiceLocation;
 
 namespace GetWelds.ViewModels

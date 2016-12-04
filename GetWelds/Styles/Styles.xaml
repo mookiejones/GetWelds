@@ -15,9 +15,7 @@
     <SolidColorBrush x:Key="MainBackground">#FFFFFF</SolidColorBrush>
     
     
-    <Style TargetType="{x:Type DataGrid}"  >
-        
-    </Style>
+    <Style TargetType="{x:Type DataGrid}" />
     <converters:DoubleConverter x:Key="DoubleConverter"/>
     <Style x:Key="TextColumnToolTip" TargetType="{x:Type DataGridCell}" >
         <Setter Property="ToolTip" Value="{DynamicResource ZipToolTip}"/>

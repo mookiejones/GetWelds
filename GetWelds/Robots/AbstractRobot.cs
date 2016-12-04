@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
 using GetWelds.ViewModels;
@@ -15,8 +14,8 @@ using GetWelds.Helpers;
 
 namespace GetWelds.Robots
 {
-    [XmlInclude(typeof(Kuka))]
-    [XmlInclude(typeof(Fanuc))]
+    [System.Xml.Serialization.XmlInclude(typeof(Kuka))]
+    [System.Xml.Serialization.XmlInclude(typeof(Fanuc))]
     [Serializable]
     public abstract class AbstractRobot : ViewModelBase
     {
@@ -90,7 +89,7 @@ namespace GetWelds.Robots
 
             GetProcessData();
 
-            Console.WriteLine("Processing Files for {0}", this.Name);
+            Console.WriteLine("Processing Files for {0}", Name);
             ProcessRobotFiles();
 
        
@@ -103,7 +102,7 @@ namespace GetWelds.Robots
             GetMainPrograms(MainRegexString);
             GetConfigData();
             GetProcessData();
-            Console.WriteLine("Processing Files for {0}", this.Name);
+            Console.WriteLine("Processing Files for {0}", Name);
             ProcessRobotFiles();
 
         }
@@ -120,7 +119,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="PositionCollection" /> property's name.
         /// </summary>
-        public const string PositionCollectionPropertyName = "PositionCollection";
+        public const string POSITION_COLLECTION_PROPERTY_NAME = "PositionCollection";
 
 
         private List<AbstractWeld> _positionCollection = new List<AbstractWeld>();
@@ -134,57 +133,24 @@ namespace GetWelds.Robots
         {
             get
             {
-                var positions = from position in Positions where position is AbstractWeld select (AbstractWeld)position;
+                var positions = Positions.OfType<AbstractWeld>();
                 return positions.ToList();
             }
         }
 
         #endregion
 
-
-        #region Positions
-
-        /// <summary>
-        /// The <see cref="Positions" /> property's name.
-        /// </summary>
-        public const string PositionsPropertyName = "Positions";
-
-        private ObservableCollection<AbstractWeld> _positions = new ObservableCollection<AbstractWeld>();
-
-        /// <summary>
-        /// Sets and gets the Positions property.
-        /// Changes to that property's value raise the PropertyChanged event.
-        /// </summary>
-        public ObservableCollection<AbstractWeld> Positions
-        {
-            get
-            {
-                return _positions;
-            }
-
-            set
-            {
-                if (_positions == value)
-                {
-                    return;
-                }
-
-                _positions = value;
-                RaisePropertyChanged(PositionsPropertyName);
-                RaisePropertyChanged("PositionCollection");
-            }
-        }
-
-        #endregion Positions
+        public ObservableCollection<AbstractWeld> Positions { get; set; }= new ObservableCollection<AbstractWeld>();
+   
 
 
         #region Files
         /// <summary>
         /// The <see cref="Files" /> property's name.
         /// </summary>
-        public const string FilesPropertyName = "Files";
+        public const string FILES_PROPERTY_NAME = "Files";
 
-        private List<RobotFile> _filesInfos = null;
+        private List<RobotFile> _filesInfos;
 
         /// <summary>
         /// Sets and gets the Files property.
@@ -205,23 +171,23 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(FilesPropertyName);
+                RaisePropertyChanging(FILES_PROPERTY_NAME);
                 _filesInfos = value;
-                RaisePropertyChanged(FilesPropertyName);
+                RaisePropertyChanged(FILES_PROPERTY_NAME);
             }
         }
         #endregion
 
 
 
-        public ObservableCollection<Tool> Tools { get; set; }
+        public ObservableCollection<Tool> Tools { get; set; } = new ObservableCollection<Tool>();
 
         #region Zip
 
         /// <summary>
         /// The <see cref="Zip" /> property's name.
         /// </summary>
-        public const string ZipPropertyName = "Zip";
+        public const string ZIP_PROPERTY_NAME = "Zip";
 
         private RobotZipFile _zip = default(RobotZipFile);
 
@@ -237,7 +203,7 @@ namespace GetWelds.Robots
             }
             set
             {
-                Set(ZipPropertyName, ref _zip, value);
+                Set(ZIP_PROPERTY_NAME, ref _zip, value);
             }
         }
 
@@ -246,7 +212,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="Name" /> property's name.
         /// </summary>
-        public const string NamePropertyName = "Name";
+        public const string NAME_PROPERTY_NAME = "Name";
 
         private string _name = string.Empty;
 
@@ -272,7 +238,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="Process2" /> property's name.
         /// </summary>
-        public const string Process2PropertyName = "Process2";
+        public const string PROCESS2_PROPERTY_NAME = "Process2";
 
         private string _process2 = string.Empty;
 
@@ -294,9 +260,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(Process2PropertyName);
+                RaisePropertyChanging(PROCESS2_PROPERTY_NAME);
                 _process2 = value;
-                RaisePropertyChanged(Process2PropertyName);
+                RaisePropertyChanged(PROCESS2_PROPERTY_NAME);
             }
         }
 
@@ -307,7 +273,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="Process1" /> property's name.
         /// </summary>
-        public const string Process1PropertyName = "Process1";
+        public const string PROCESS1_PROPERTY_NAME = "Process1";
 
         private string _process1 = string.Empty;
 
@@ -329,9 +295,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(Process1PropertyName);
+                RaisePropertyChanging(PROCESS1_PROPERTY_NAME);
                 _process1 = value;
-                RaisePropertyChanged(Process1PropertyName);
+                RaisePropertyChanged(PROCESS1_PROPERTY_NAME);
             }
         }
 
@@ -340,41 +306,9 @@ namespace GetWelds.Robots
 
 
 
-        
+        public ObservableCollection<SearchParam> OptionalValues { get; set; } = new ObservableCollection<SearchParam>();
 
-        #region OptionsValues
-        /// <summary>
-        /// The <see cref="OptionalValues" /> property's name.
-        /// </summary>
-        public const string OptionsValuesPropertyName = "OptionsValues";
-
-        private ObservableCollection<SearchParam> Options = new ObservableCollection<SearchParam>();
-
-        /// <summary>
-        /// Sets and gets the OptionsValues property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// <remarks> Used with a configuration file so that additional values can be retrieved from config.Dat</remarks>
-        /// </summary>
-        public ObservableCollection<SearchParam> OptionalValues
-        {
-            get
-            {
-                return Options;
-            }
-
-            set
-            {
-                if (Options == value)
-                {
-                    return;
-                }
-
-                RaisePropertyChanging(OptionsValuesPropertyName);
-                Options = value;
-                RaisePropertyChanged(OptionsValuesPropertyName);
-            }
-        }
-        #endregion
+       
         
 
         #endregion · Properties ·
@@ -384,7 +318,7 @@ namespace GetWelds.Robots
         [Annotations.NotNull]
         private readonly List<int> _ignoredStyles = new List<int> { 41, 40, 42, 43, 44, 45, 46, 47, 48, 49, 50, 57, 58, 59, 60, 61, 62, 63, 64, 65 };
 
-        internal IEnumerable<RobotFile> _processableFiles;
+        internal IEnumerable<RobotFile> ProcessableFiles;
 
 
         #endregion · Fields ·
@@ -394,7 +328,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="SelectedStyle" /> property's name.
         /// </summary>
-        public const string SelectedStylePropertyName = "SelectedStyle";
+        public const string SELECTED_STYLE_PROPERTY_NAME = "SelectedStyle";
 
         private StyleProgramViewModel _selectedStyle = new StyleProgramViewModel();
 
@@ -411,7 +345,7 @@ namespace GetWelds.Robots
             }
             set
             {
-                Set(SelectedStylePropertyName, ref _selectedStyle, value, true);
+                Set(SELECTED_STYLE_PROPERTY_NAME, ref _selectedStyle, value, true);
             }
         }
 
@@ -421,7 +355,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="Styles" /> property's name.
         /// </summary>
-        public const string StylesPropertyName = "Styles";
+        public const string STYLES_PROPERTY_NAME = "Styles";
 
         private List<StyleProgramViewModel> _styles = new List<StyleProgramViewModel>();
 
@@ -443,9 +377,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(StylesPropertyName);
+                RaisePropertyChanging(STYLES_PROPERTY_NAME);
                 _styles = value;
-                RaisePropertyChanged(StylesPropertyName);
+                RaisePropertyChanged(STYLES_PROPERTY_NAME);
             }
         }
         #endregion
@@ -490,7 +424,7 @@ namespace GetWelds.Robots
         protected abstract void AddStylePrograms(IEnumerable<string> filenames, int style, string programname);
 
 
-        internal string _tempPath = string.Empty;
+        internal string TempPath = string.Empty;
 
         protected abstract void GetStyleProgram(string programname, int stylenumber);
 
@@ -548,43 +482,14 @@ namespace GetWelds.Robots
             var _files = from file in files
                          where file.Extension.ToLowerInvariant() == FileExtension
                          select file;
-            _processableFiles = _files;
+            ProcessableFiles = _files;
         }
-
-        /// <summary>
-        /// The <see cref="Zones" /> property's name.
-        /// </summary>
-        public const string ZonesPropertyName = "Zones";
-
-        private ObservableCollection<Zone> _zones = new ObservableCollection<Zone>();
-
-        /// <summary>
-        /// Sets and gets the Zones property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// </summary>
-        public ObservableCollection<Zone> Zones
-        {
-            get
-            {
-                return _zones;
-            }
-
-            set
-            {
-                if (_zones == value)
-                {
-                    return;
-                }
-
-                RaisePropertyChanging(ZonesPropertyName);
-                _zones = value;
-                RaisePropertyChanged(ZonesPropertyName);
-            }
-        }
-        public abstract Regex PTPWeldRegex { get; }
-        public abstract Regex LINWeldRegex { get; }
-        public abstract Regex LINStudWeldRegex { get; }
-        public abstract Regex PTPStudWeldRegex { get; }
+        public ObservableCollection<Zone> Zones { get; set; }= new ObservableCollection<Zone>();
+        
+        public abstract Regex PtpWeldRegex { get; }
+        public abstract Regex LinWeldRegex { get; }
+        public abstract Regex LinStudWeldRegex { get; }
+        public abstract Regex PtpStudWeldRegex { get; }
 
 
         public abstract Regex RivetWeldRegex { get; }
@@ -595,7 +500,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="SelectedZone" /> property's name.
         /// </summary>
-        public const string SelectedZonePropertyName = "SelectedZone";
+        public const string SELECTED_ZONE_PROPERTY_NAME = "SelectedZone";
 
         private Zone _selectedZone;
 
@@ -617,9 +522,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(SelectedZonePropertyName);
+                RaisePropertyChanging(SELECTED_ZONE_PROPERTY_NAME);
                 _selectedZone = value;
-                RaisePropertyChanged(SelectedZonePropertyName);
+                RaisePropertyChanged(SELECTED_ZONE_PROPERTY_NAME);
             }
         }
 
@@ -628,7 +533,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="RobotOptions" /> property's name.
         /// </summary>
-        public const string RobotOptionsPropertyName = "RobotOptions";
+        public const string ROBOT_OPTIONS_PROPERTY_NAME = "RobotOptions";
 
         private OptionsClass _robotOptions = new OptionsClass();
 
@@ -650,9 +555,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(RobotOptionsPropertyName);
+                RaisePropertyChanging(ROBOT_OPTIONS_PROPERTY_NAME);
                 _robotOptions = value;
-                RaisePropertyChanged(RobotOptionsPropertyName);
+                RaisePropertyChanged(ROBOT_OPTIONS_PROPERTY_NAME);
             }
         }
         #endregion
@@ -670,7 +575,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="Declaration" /> property's name.
         /// </summary>
-        public const string DeclarationPropertyName = "Declaration";
+        public const string DECLARATION_PROPERTY_NAME = "Declaration";
 
         private string _declaration = string.Empty;
 
@@ -692,9 +597,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(DeclarationPropertyName);
+                RaisePropertyChanging(DECLARATION_PROPERTY_NAME);
                 _declaration = value;
-                RaisePropertyChanged(DeclarationPropertyName);
+                RaisePropertyChanged(DECLARATION_PROPERTY_NAME);
             }
         }
         #endregion
@@ -705,7 +610,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="ZoneFilePosition" /> property's name.
         /// </summary>
-        public const string ZoneFilePositionPropertyName = "ZoneFilePosition";
+        public const string ZONE_FILE_POSITION_PROPERTY_NAME = "ZoneFilePosition";
 
         private int _zoneFilePosition = -1;
 
@@ -727,9 +632,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(ZoneFilePositionPropertyName);
+                RaisePropertyChanging(ZONE_FILE_POSITION_PROPERTY_NAME);
                 _zoneFilePosition = value;
-                RaisePropertyChanged(ZoneFilePositionPropertyName);
+                RaisePropertyChanged(ZONE_FILE_POSITION_PROPERTY_NAME);
             }
         }
         #endregion
@@ -739,7 +644,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="EntryFilename" /> property's name.
         /// </summary>
-        public const string EntryFilenamePropertyName = "EntryFilename";
+        public const string ENTRY_FILENAME_PROPERTY_NAME = "EntryFilename";
 
         private string _entryFilename = string.Empty;
 
@@ -761,9 +666,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(EntryFilenamePropertyName);
+                RaisePropertyChanging(ENTRY_FILENAME_PROPERTY_NAME);
                 _entryFilename = value;
-                RaisePropertyChanged(EntryFilenamePropertyName);
+                RaisePropertyChanged(ENTRY_FILENAME_PROPERTY_NAME);
             }
         }
         #endregion
@@ -773,7 +678,7 @@ namespace GetWelds.Robots
         /// <summary>
         /// The <see cref="LineBefore" /> property's name.
         /// </summary>
-        public const string LineBeforePropertyName = "LineBefore";
+        public const string LINE_BEFORE_PROPERTY_NAME = "LineBefore";
 
         private string _lineBefore = string.Empty;
 
@@ -795,9 +700,9 @@ namespace GetWelds.Robots
                     return;
                 }
 
-                RaisePropertyChanging(LineBeforePropertyName);
+                RaisePropertyChanging(LINE_BEFORE_PROPERTY_NAME);
                 _lineBefore = value;
-                RaisePropertyChanged(LineBeforePropertyName);
+                RaisePropertyChanged(LINE_BEFORE_PROPERTY_NAME);
             }
         }
         #endregion

@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using GetWelds.ViewModels;
 using GetWelds.Properties;
@@ -79,7 +77,7 @@ namespace GetWelds.Robots
         protected override void GetRobotName()
         {
 
-            string text = string.Empty;
+            var text = string.Empty;
             
             // find file
             if (Zip != null)
@@ -114,17 +112,15 @@ namespace GetWelds.Robots
             var matches = tools.Match(config);
             while (matches.Success)
             {
-                switch (matches.Groups[1].ToString())
+                if (matches.Groups[1].ToString() == "PROCESS1")
                 {
-                    case "PROCESS1":
-                        Process1 = matches.Groups[2].ToString();
-                        break;
-
-                    case "PROCESS2":
-                        Process2 = matches.Groups[2].ToString();
-                        break;
+                    Process1 = matches.Groups[2].ToString();
                 }
-              
+                else if (matches.Groups[1].ToString() == "PROCESS2")
+                {
+                    Process2 = matches.Groups[2].ToString();
+                }
+
                 matches = matches.NextMatch();
             }
 
@@ -135,9 +131,14 @@ namespace GetWelds.Robots
                    matches=ffr.Match(config);
             while(matches.Success)
             {
-                var option = new SearchParam();
-                option.Name = String.Format("{0} FFR  Enabled", matches.Groups[1]);
-                option.Value = String.Equals(matches.Groups[2].ToString(),"WITH",StringComparison.OrdinalIgnoreCase).ToString().ToUpperInvariant();
+                var option = new SearchParam
+                {
+                    Name = $"{matches.Groups[1].Value} FFR  Enabled",
+                    Value =
+                        string.Equals(matches.Groups[2].ToString(), "WITH", StringComparison.OrdinalIgnoreCase)
+                            .ToString()
+                            .ToUpperInvariant()
+                };
                 OptionalValues.Add(option);
                 matches = matches.NextMatch();
             }
@@ -152,9 +153,11 @@ namespace GetWelds.Robots
             var matches=regex.Match(text);
             while(matches.Success)
             {
-                var option = new SearchParam();
-                option.Name=String.Format(format,matches.Groups[1]);
-                option.Value=matches.Groups[2].ToString();
+                var option = new SearchParam
+                {
+                    Name = string.Format(format, matches.Groups[1]),
+                    Value = matches.Groups[2].ToString()
+                };
                 OptionalValues.Add(option);
                 matches=matches.NextMatch();
             }
@@ -207,7 +210,7 @@ namespace GetWelds.Robots
         public override Position ParsePosition(string line, int linenumber, string file, int style)
         {
             var p = new Position { Style = style, Filename = file };
-            line = line.Replace(";FOLD", String.Empty);
+            line = line.Replace(";FOLD", string.Empty);
             line = line.Substring(0, line.IndexOf(";", StringComparison.Ordinal)).Trim();
             var spl = line.Trim().Split(' ');
             p.MotionType = (PositionType)Enum.Parse(typeof(PositionType), spl[0]);
@@ -223,7 +226,7 @@ namespace GetWelds.Robots
             var vel = new Regex("[^=]*=/s*([0-9]+)").Matches(line);
             // p.Velocity = Convert.ToDouble(vel.Groups[0].ToString());
             //        //    p.Velocity = Convert.ToDouble(spl[4]);
-            p.IsContinuous = String.Equals(spl[2], "CONT", StringComparison.OrdinalIgnoreCase);
+            p.IsContinuous = string.Equals(spl[2], "CONT", StringComparison.OrdinalIgnoreCase);
             p.LineNumber = linenumber;
             return p;
         }
@@ -243,17 +246,19 @@ namespace GetWelds.Robots
 
 
 
-            var FileName = new FileInfo(filename);
+            var fileName = new FileInfo(filename);
             var result = new List<AbstractWeld>();
             for (var i = 0; i < fileLines.Length; i++)
             {
                 if (fileLines[i].Contains(StringResources.EnterZone))
                 {
-                    var zone = new Zone();
-                    zone.ZoneFilePosition = i;
-                    zone.LineBefore = fileLines[i - 1];
+                    var zone = new Zone
+                    {
+                        ZoneFilePosition = i,
+                        LineBefore = fileLines[i - 1]
+                    };
 
-                  var linebefore = fileLines[i - 1];
+                    var linebefore = fileLines[i - 1];
                   if (linebefore.Contains(StringResources.KUKAEndfold))
                   {
                       var j = i - 2;
@@ -266,12 +271,12 @@ namespace GetWelds.Robots
                   }
 
                   //HACK
-                  var dec = fileLines[i].Replace(";FOLD", String.Empty);
-                  dec = dec.Replace(@";%{PE}%MKUKATPUSER", String.Empty);
+                  var dec = fileLines[i].Replace(";FOLD", string.Empty);
+                  dec = dec.Replace(@";%{PE}%MKUKATPUSER", string.Empty);
 
                   zone.Declaration = dec;
-                  StringBuilder builder = new StringBuilder();
-                  foreach (string value in fileLines)
+                  var builder = new StringBuilder();
+                  foreach (var value in fileLines)
                   {
                       if (value.Trim().StartsWith(";"))
                       builder.AppendLine(value);
@@ -292,9 +297,9 @@ namespace GetWelds.Robots
                 else
                 {
                     if (fileLines[i].ToUpper().Contains(";FOLD PTP"))
-                        position = ParsePosition(fileLines[i], i, FileName.Name);
+                        position = ParsePosition(fileLines[i], i, fileName.Name);
                     if (fileLines[i].ToUpper().Contains(";FOLD LIN"))
-                        position = ParsePosition(fileLines[i], i, FileName.Name);
+                        position = ParsePosition(fileLines[i], i, fileName.Name);
                 }
 
                 if (position != null)
@@ -321,23 +326,25 @@ namespace GetWelds.Robots
         public AbstractWeld ParseRobotLine(string line, int linenumber,int sequence,string filename,int style)
         {
             //TODO Need to be able to determine if Weld is Spot or servo
-            var w = new RobotWeld(filename,style);
-                w.Name = GetWeldViewModel.GetRegexMatch(Settings.Default.KukaWeldNameRegex, line);
-                w.Sequence = sequence;
-                w.Velocity = Convert.ToDouble(GetWeldViewModel.GetRegexMatch(Settings.Default.VelocityRegex, line));
-                w.LineNumber = linenumber;
-                w.Schedule = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldScheduleRegex, line);
-                w.ID = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldIdRegex, line);
-                w.Thickness = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldThicknessRegex, line);
-                w.Force = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldForceRegex, line);
-                w.Gun1 = GetWeldViewModel.GetRegexMatch(Settings.Default.Gun1Regex, line);
-                w.Gun2 = GetWeldViewModel.GetRegexMatch(Settings.Default.Gun2Regex, line);
-                w.Gun3 = GetWeldViewModel.GetRegexMatch(Settings.Default.Gun3Regex, line);
-                w.Gun4 = GetWeldViewModel.GetRegexMatch(Settings.Default.Gun4Regex, line);
-                w.Equalizer1 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr1Regex, line).Trim() == "X";
-                w.Equalizer2 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr2Regex, line).Trim() == "X";
-                w.Equalizer3 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr3Regex, line).Trim() == "X";
-                w.Equalizer4 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr4Regex, line).Trim() == "X";
+            var w = new RobotWeld(filename, style)
+            {
+                Name = GetWeldViewModel.GetRegexMatch(Settings.Default.KukaWeldNameRegex, line),
+                Sequence = sequence,
+                Velocity = Convert.ToDouble(GetWeldViewModel.GetRegexMatch(Settings.Default.VelocityRegex, line)),
+                LineNumber = linenumber,
+                Schedule = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldScheduleRegex, line),
+                Id = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldIdRegex, line),
+                Thickness = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldThicknessRegex, line),
+                Force = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldForceRegex, line),
+                Gun1 = GetWeldViewModel.GetRegexMatch(Settings.Default.Gun1Regex, line),
+                Gun2 = GetWeldViewModel.GetRegexMatch(Settings.Default.Gun2Regex, line),
+                Gun3 = GetWeldViewModel.GetRegexMatch(Settings.Default.Gun3Regex, line),
+                Gun4 = GetWeldViewModel.GetRegexMatch(Settings.Default.Gun4Regex, line),
+                Equalizer1 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr1Regex, line).Trim() == "X",
+                Equalizer2 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr2Regex, line).Trim() == "X",
+                Equalizer3 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr3Regex, line).Trim() == "X",
+                Equalizer4 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr4Regex, line).Trim() == "X"
+            };
 
             GetWeldViewModel.GetRegexMatch(Settings.Default.AnticpRegex, line);
 
@@ -348,24 +355,26 @@ namespace GetWelds.Robots
         {
             var p = new RobotWeld(filename,-1);
             
-            line = line.Replace(";FOLD", String.Empty);
+            line = line.Replace(";FOLD", string.Empty);
             line = line.Substring(0, line.IndexOf(";", StringComparison.Ordinal)).Trim();
             var spl = line.Trim().Split(' ');
             p.MotionType = (PositionType)Enum.Parse(typeof(PositionType), spl[0]);
             p.Name = spl[1];
 //            p.Velocity = Convert.ToDouble(spl[4]);
-            p.IsContinuous = String.Equals(spl[2], "CONT", StringComparison.OrdinalIgnoreCase);
+            p.IsContinuous = string.Equals(spl[2], "CONT", StringComparison.OrdinalIgnoreCase);
             p.LineNumber = linenumber;
             return p;
         }
 
         protected override void AddStylePrograms(IEnumerable<string> filenames, int styleno, string programname)
         {
-            var style = new StyleProgramViewModel();
-            style.Style = styleno;
-            style.Name = programname;
-            style.StyleProgramName = programname;
-      
+            var style = new StyleProgramViewModel
+            {
+                Style = styleno,
+                Name = programname,
+                StyleProgramName = programname
+            };
+
 
             foreach (var filename in filenames)
             {
@@ -419,7 +428,7 @@ namespace GetWelds.Robots
             if (IsIgnored(stylenumber) | stylenumber > 10)
                 return;
 
-            _tempPath = Path.GetTempPath();
+            TempPath = Path.GetTempPath();
             GetRobotName();
             var programs = new List<string>();
             programname = programname.Trim().Replace(@"(", string.Empty).Trim().ToLower();
@@ -443,7 +452,7 @@ namespace GetWelds.Robots
             {
                 var path = Files.Single(f => f.Name.ToLowerInvariant() == programname.ToLowerInvariant());
                 style = File.ReadAllText(path.FullName);
-                temp = path.DirectoryName;
+                _temp = path.DirectoryName;
 
             }
 
@@ -464,7 +473,7 @@ namespace GetWelds.Robots
             AddStylePrograms(programs, stylenumber, programname);
         }
 
-        private string temp;
+        private string _temp;
 
         public override AbstractWeld GetWeld(Match match, int linenumber, int sequence, string filename, int style)
         {
@@ -485,7 +494,7 @@ namespace GetWelds.Robots
             weld.Velocity = Convert.ToDouble(GetWeldViewModel.GetRegexMatch(Settings.Default.VelocityRegex, line));
             weld.LineNumber = linenumber;
             weld.Schedule = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldScheduleRegex, line);
-            weld.ID = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldIdRegex, line);
+            weld.Id = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldIdRegex, line);
             weld.Thickness = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldThicknessRegex, line);
             weld.Force = GetWeldViewModel.GetRegexMatch(Settings.Default.WeldForceRegex, line);
 
@@ -498,7 +507,7 @@ namespace GetWelds.Robots
             weld.Equalizer3 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr3Regex, line).Trim() == "X";
             weld.Equalizer4 = GetWeldViewModel.GetRegexMatch(Settings.Default.Eqlzr4Regex, line).Trim() == "X";
 
-            var antic = GetWeldViewModel.GetRegexMatch(Properties.Settings.Default.AnticpRegex, line);
+            var antic = GetWeldViewModel.GetRegexMatch(Settings.Default.AnticpRegex, line);
             
             return weld;
         }
@@ -510,14 +519,14 @@ namespace GetWelds.Robots
 
       
 
-        public override void GetMainPrograms(string RegexString)
+        public override void GetMainPrograms(string regexString)
         {
 
             var cell = Zip.Entries.Single(z => z.FileName.ToLower() == "krc/r1/cellstart.src");
 
             var celltext = Zip.ReadEntryText(cell);
 //            var celltext = GetFileText("krc/r1/cellstart.src");
-            var regex = GetRegex(RegexString);
+            var regex = GetRegex(regexString);
 
             var matches = regex.Match(celltext);
             while (matches.Success)
@@ -548,9 +557,9 @@ namespace GetWelds.Robots
             public RobotWeld(string line, int linenumber, int sequence, string filename, int style)
                 : base(filename, style)
             {
-                this.Line = line;
-                this.LineNumber = linenumber;
-                this.Sequence = sequence;
+                Line = line;
+                LineNumber = linenumber;
+                Sequence = sequence;
                 Filename = filename;
                 Style = style;
             }
@@ -561,22 +570,22 @@ namespace GetWelds.Robots
 
         }
 
-        public override Regex PTPWeldRegex
+        public override Regex PtpWeldRegex
         {
             get { return new Regex(StringResources.KUKAServoWeldPTP, RegexOptions.IgnoreCase); }
         }
 
-        public override Regex LINWeldRegex
+        public override Regex LinWeldRegex
         {
             get { return new Regex(Settings.Default.KukaWeldNameRegex, RegexOptions.IgnoreCase|RegexOptions.Multiline); }
         }
 
-        public override Regex LINStudWeldRegex
+        public override Regex LinStudWeldRegex
         {
             get { return new Regex(StringResources.KUKAStudWeldLIN, RegexOptions.IgnoreCase); }
         }
 
-        public override Regex PTPStudWeldRegex
+        public override Regex PtpStudWeldRegex
         {
             get { return new Regex(StringResources.KUKAStudWeldPTP, RegexOptions.IgnoreCase); }
         }

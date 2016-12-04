@@ -1,5 +1,4 @@
-﻿using GetWelds.Messages;
-namespace GetWelds.ViewModels
+﻿namespace GetWelds.ViewModels
 {
     public interface IDataService
     {

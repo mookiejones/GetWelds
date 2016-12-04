@@ -2,6 +2,6 @@
 {
 
 
-    public enum PositionType { PTP, LIN, CIRC, None }
+    public enum PositionType { Ptp, Lin, Circ, None }
 
 }

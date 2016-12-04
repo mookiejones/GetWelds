@@ -62,7 +62,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Date" /> property's name.
         /// </summary>
-        public const string DatePropertyName = "Date";
+        public const string DATE_PROPERTY_NAME = "Date";
 
         private DateTime _date = default(DateTime);
 
@@ -84,9 +84,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(DatePropertyName);
+                RaisePropertyChanging(DATE_PROPERTY_NAME);
                 _date = value;
-                RaisePropertyChanged(DatePropertyName);
+                RaisePropertyChanged(DATE_PROPERTY_NAME);
             }
         }
 
@@ -97,7 +97,7 @@ namespace GetWelds.ViewModels
         /// <summary>
         /// The <see cref="Path" /> property's name.
         /// </summary>
-        public const string PathPropertyName = "Path";
+        public const string PATH_PROPERTY_NAME = "Path";
 
         private string _path = string.Empty;
 
@@ -119,9 +119,9 @@ namespace GetWelds.ViewModels
                     return;
                 }
 
-                RaisePropertyChanging(PathPropertyName);
+                RaisePropertyChanging(PATH_PROPERTY_NAME);
                 _path = value;
-                RaisePropertyChanged(PathPropertyName);
+                RaisePropertyChanged(PATH_PROPERTY_NAME);
             }
         }
 
@@ -168,7 +168,7 @@ namespace GetWelds.ViewModels
             _zip.ExtractAll(path,ExtractExistingFileAction.InvokeExtractProgressEvent);
         }
 
-        void _zip_ExtractProgress(object sender, ExtractProgressEventArgs e)
+        private void _zip_ExtractProgress(object sender, ExtractProgressEventArgs e)
         {
             switch(e.EventType)
             {
@@ -181,8 +181,6 @@ namespace GetWelds.ViewModels
                 case ZipProgressEventType.Extracting_ExtractEntryWouldOverwrite:
                     e.CurrentEntry.Extract(ExtractExistingFileAction.OverwriteSilently);
 
-                    break;
-                default:
                     break;
             }
         }
@@ -243,7 +241,6 @@ namespace GetWelds.ViewModels
 
             var file = _zip.Entries.FirstOrDefault(f => f.FileName.Contains(filename));
             return ReadEntryLines(file);
-;
         }
 
         #endregion · Public Methods ·

@@ -81,8 +81,8 @@ namespace GetWelds.Converters
                     _oldEvent = ei; // store to detach in case the Event property changes
                 }
                 else
-                    throw new ArgumentException(string.Format("The event '{0}' was not found on type '{1}'", eventName,
-                        AssociatedObject.GetType().Name));
+                    throw new ArgumentException(
+                        $"The event '{eventName}' was not found on type '{AssociatedObject.GetType().Name}'");
             }
         }
         /// <summary>

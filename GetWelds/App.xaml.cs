@@ -26,7 +26,7 @@ namespace GetWelds
 
                 var savefile = Path.ChangeExtension(args[i], ".xml");
 
-                wvm.ExportToXMLFile(savefile);
+                wvm.ExportToXmlFile(savefile);
             }
 
             if (args.Length>1)
